@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.Cozinha;
-import br.com.btstech.btsfoodapi.repository.CozinhaRepository;
+import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

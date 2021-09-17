@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.Permissao;
-import br.com.btstech.btsfoodapi.repository.PermissaoRepository;
+import br.com.btstech.btsfoodapi.domain.repository.PermissaoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

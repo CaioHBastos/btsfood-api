@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.Estado;
-import br.com.btstech.btsfoodapi.repository.EstadoRepository;
+import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

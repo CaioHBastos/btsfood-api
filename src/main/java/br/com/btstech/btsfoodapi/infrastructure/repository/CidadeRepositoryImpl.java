@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.Cidade;
-import br.com.btstech.btsfoodapi.repository.CidadeRepository;
+import br.com.btstech.btsfoodapi.domain.repository.CidadeRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

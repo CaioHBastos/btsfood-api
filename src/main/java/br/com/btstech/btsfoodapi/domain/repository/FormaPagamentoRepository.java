@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.repository;
+package br.com.btstech.btsfoodapi.domain.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.FormaPagamento;
 

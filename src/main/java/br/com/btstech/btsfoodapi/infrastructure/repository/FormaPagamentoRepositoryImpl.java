@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.FormaPagamento;
-import br.com.btstech.btsfoodapi.repository.FormaPagamentoRepository;
+import br.com.btstech.btsfoodapi.domain.repository.FormaPagamentoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

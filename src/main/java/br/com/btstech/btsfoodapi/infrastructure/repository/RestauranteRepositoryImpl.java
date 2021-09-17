@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository;
 
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
-import br.com.btstech.btsfoodapi.repository.RestauranteRepository;
+import br.com.btstech.btsfoodapi.domain.repository.RestauranteRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
