@@ -1,10 +1,12 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.domain.exception.EntidadeEmUsoException;
+import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.Cozinha;
 import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
+import br.com.btstech.btsfoodapi.domain.service.CadastroCozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
 public class CozinhaController {
 
     private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cadastroCozinhaService;
 
     @GetMapping
     public List<Cozinha> listar() {
@@ -36,7 +39,7 @@ public class CozinhaController {
 
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha novaCozinha) {
-        Cozinha cozinha = cozinhaRepository.salvar(novaCozinha);
+        Cozinha cozinha = cadastroCozinhaService.salvar(novaCozinha);
         return new ResponseEntity(cozinha, HttpStatus.CREATED);
     }
 
@@ -57,15 +60,13 @@ public class CozinhaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         try {
-            Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
-
-            if (cozinhaAtual == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            cozinhaRepository.remover(cozinhaAtual);
+            cadastroCozinhaService.excluir(id);
             return ResponseEntity.noContent().build();
-        } catch (DataIntegrityViolationException exception) {
+
+        } catch (EntidadeNaoEncontradaException exception) {
+            return ResponseEntity.notFound().build();
+
+        } catch (EntidadeEmUsoException exception) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
