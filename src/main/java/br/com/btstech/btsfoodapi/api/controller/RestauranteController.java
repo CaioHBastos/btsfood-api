@@ -4,13 +4,17 @@ import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.repository.RestauranteRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -67,6 +71,33 @@ public class RestauranteController {
             return ResponseEntity.badRequest()
                     .body(exception.getMessage());
         }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
+        Restaurante restauranteAtual = restauranteRepository.buscar(id);
+
+        if (restauranteAtual == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        merge(campos, restauranteAtual);
+
+        return atualizar(id, restauranteAtual);
+    }
+
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+
+        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            Field campo = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+            campo.setAccessible(true);
+
+            Object novoValor = ReflectionUtils.getField(campo, restauranteOrigem);
+
+            ReflectionUtils.setField(campo, restauranteDestino, novoValor);
+        });
     }
 }
 
