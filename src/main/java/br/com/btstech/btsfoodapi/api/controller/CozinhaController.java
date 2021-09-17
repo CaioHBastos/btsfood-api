@@ -40,7 +40,8 @@ public class CozinhaController {
     @PostMapping
     public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha novaCozinha) {
         Cozinha cozinha = cadastroCozinhaService.salvar(novaCozinha);
-        return new ResponseEntity(cozinha, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(cozinha);
     }
 
     @PutMapping("/{id}")
