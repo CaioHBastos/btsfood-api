@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -23,18 +24,18 @@ public class EstadoController {
 
     @GetMapping
     public List<Estado> listar() {
-        return estadoRepository.listar();
+        return estadoRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Estado estado = estadoRepository.buscar(id);
+        Optional<Estado> estado = estadoRepository.findById(id);
 
-        if (estado == null) {
+        if (estado.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(estado);
+        return ResponseEntity.ok(estado.get());
     }
 
     @PostMapping
@@ -45,16 +46,16 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado novoEstado) {
-        Estado estadoAtual = estadoRepository.buscar(id);
+        Optional<Estado> estadoAtual = estadoRepository.findById(id);
 
-        if (estadoAtual == null) {
+        if (estadoAtual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        BeanUtils.copyProperties(novoEstado, estadoAtual, "id");
+        BeanUtils.copyProperties(novoEstado, estadoAtual.get(), "id");
 
-        cadastroEstadoService.salvar(estadoAtual);
-        return ResponseEntity.ok(estadoAtual);
+        Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
+        return ResponseEntity.ok(estadoSalvo);
     }
 
     @DeleteMapping("/{id}")
