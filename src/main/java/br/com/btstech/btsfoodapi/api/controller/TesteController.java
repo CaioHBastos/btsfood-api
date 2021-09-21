@@ -59,13 +59,23 @@ public class TesteController {
     }
 
     @GetMapping("/restaurantes/por-nome-e-frete")
-    public List<Restaurante> restaurantesPorNomeFrete(String nome,
-                                                      BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+    public List<Restaurante> restaurantesPorNomeFrete(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
         return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
     }
 
     @GetMapping("/restaurantes/count-por-cozinha")
     public int restaurantesCountPorCozinha(Long cozinhaId) {
         return restauranteRepository.countByCozinhaId(cozinhaId);
+    }
+
+    @GetMapping("/restaurantes/por-frete-gratis")
+    public List<Restaurante> restaurantesPorNomeFrete(String nome) {
+
+        return restauranteRepository.findComFreteGratis(nome);
+    }
+
+    @GetMapping("/restaurantes/buscar-primeiro")
+    public Optional<Restaurante> restaurantePrimeiro() {
+        return restauranteRepository.buscarPrimeiro();
     }
 }
