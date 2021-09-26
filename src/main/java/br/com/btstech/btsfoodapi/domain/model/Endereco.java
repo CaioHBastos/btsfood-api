@@ -3,10 +3,7 @@ package br.com.btstech.btsfoodapi.domain.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -28,7 +25,7 @@ public class Endereco {
     @Column(name = "endereco_bairro")
     private String bairro;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_cidade_id")
     private Cidade cidade;
 }
