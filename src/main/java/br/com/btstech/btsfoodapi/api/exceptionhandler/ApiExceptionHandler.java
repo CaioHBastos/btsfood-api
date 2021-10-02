@@ -11,33 +11,45 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEntidadeNaoEncontratadaException(EntidadeNaoEncontradaException exception,
+    public ResponseEntity<?> handleEntidadeNaoEncontratadaException(EntidadeNaoEncontradaException exception,
                                                                     WebRequest webRequest) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String detail = exception.getMessage();
+        ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
 
-        return handleExceptionInternal(exception, exception.getMessage(), new HttpHeaders(),
-                HttpStatus.NOT_FOUND, webRequest);
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .build();
+
+        return handleExceptionInternal(exception, problem, new HttpHeaders(),
+                status, webRequest);
     }
 
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarEntidadeNegocioException(NegocioException exception,
+    public ResponseEntity<?> handleEntidadeNegocioException(NegocioException exception,
                                                             WebRequest webRequest) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
+        String detail = exception.getMessage();
 
-        return handleExceptionInternal(exception, exception.getMessage(), new HttpHeaders(),
-                HttpStatus.BAD_REQUEST, webRequest);
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(exception, problem, new HttpHeaders(), status, webRequest);
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> tratarEntidadeEmUsoException(EntidadeEmUsoException exception,
+    public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException exception,
                                                           WebRequest webRequest) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.ERRO_NEGOCIO;
+        String detail = exception.getMessage();
 
-        return handleExceptionInternal(exception, exception.getMessage(), new HttpHeaders(),
-                HttpStatus.CONFLICT, webRequest);
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(exception, problem, new HttpHeaders(), status, webRequest);
     }
 
     @Override
@@ -45,19 +57,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                              HttpStatus status, WebRequest request) {
 
         if (body == null) {
-            body = Problema.builder()
-                    .dataHora(LocalDateTime.now())
-                    .mensagem(status.getReasonPhrase())
+            body = Problem.builder()
+                    .status(status.value())
+                    .title(status.getReasonPhrase())
                     .build();
 
         } else if (body instanceof String) {
-            body = Problema.builder()
-                    .dataHora(LocalDateTime.now())
-                    .mensagem(ex.getMessage())
+            body = Problem.builder()
+                    .status(status.value())
+                    .title((String) body)
                     .build();
         }
 
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
+        return Problem.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .details(detail);
     }
 }
