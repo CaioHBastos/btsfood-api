@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.domain.service;
 
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeEmUsoException;
-import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
+import br.com.btstech.btsfoodapi.domain.exception.EstadoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroEstadoService {
 
+    private static final String MSG_ESTADO_EM_USO  =
+            "Estado de código %d não pode ser removido, pois está em uso";
+
     private EstadoRepository estadoRepository;
 
     public Estado salvar(Estado estado) {
@@ -23,13 +26,17 @@ public class CadastroEstadoService {
         try {
             estadoRepository.deleteById(estadoId);
 
-        } catch (EmptyResultDataAccessException exception) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não existe um cadastro de estado com o código %d", estadoId));
+        } catch (EmptyResultDataAccessException e) {
+            throw new EstadoNaoEncontradaException(estadoId);
 
-        } catch (DataIntegrityViolationException exception) {
+        } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Estado de código %d não pode ser removida, pois está em uso", estadoId));
+                    String.format(MSG_ESTADO_EM_USO, estadoId));
         }
+    }
+
+    public Estado buscarOuFalhar(Long estadoId) {
+        return estadoRepository.findById(estadoId)
+                .orElseThrow(() -> new EstadoNaoEncontradaException(estadoId));
     }
 }

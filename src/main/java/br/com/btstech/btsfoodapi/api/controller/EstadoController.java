@@ -1,7 +1,5 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
-import br.com.btstech.btsfoodapi.domain.exception.EntidadeEmUsoException;
-import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroEstadoService;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -29,13 +26,9 @@ public class EstadoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Estado> buscar(@PathVariable Long id) {
-        Optional<Estado> estado = estadoRepository.findById(id);
+        Estado estado = cadastroEstadoService.buscarOuFalhar(id);
 
-        if (estado.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(estado.get());
+        return ResponseEntity.ok(estado);
     }
 
     @PostMapping
@@ -46,29 +39,17 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody Estado novoEstado) {
-        Optional<Estado> estadoAtual = estadoRepository.findById(id);
+        Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(id);
 
-        if (estadoAtual.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        BeanUtils.copyProperties(novoEstado, estadoAtual, "id");
 
-        BeanUtils.copyProperties(novoEstado, estadoAtual.get(), "id");
-
-        Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual.get());
+        Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual);
         return ResponseEntity.ok(estadoSalvo);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        try {
-            cadastroEstadoService.excluir(id);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntidadeNaoEncontradaException exception) {
-            return ResponseEntity.notFound().build();
-
-        } catch (EntidadeEmUsoException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        cadastroEstadoService.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 }
