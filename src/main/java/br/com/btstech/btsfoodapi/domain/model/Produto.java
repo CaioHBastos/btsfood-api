@@ -1,16 +1,16 @@
 package br.com.btstech.btsfoodapi.domain.model;
 
-import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Produto {
 
@@ -34,4 +34,17 @@ public class Produto {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Restaurante restaurante;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

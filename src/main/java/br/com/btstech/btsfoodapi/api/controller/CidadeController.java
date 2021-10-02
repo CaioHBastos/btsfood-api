@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -34,7 +35,7 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<Cidade> adicionar(@RequestBody Cidade novaCidade) {
+    public ResponseEntity<Cidade> adicionar(@RequestBody @Valid Cidade novaCidade) {
         try {
             Cidade cidade = cidadeCadastroService.salvar(novaCidade);
             return ResponseEntity.status(HttpStatus.CREATED).body(cidade);
@@ -45,7 +46,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade novaCidade) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid Cidade novaCidade) {
         try {
             Cidade cidadeAtual = cidadeCadastroService.buscarOuFalhar(id);
 

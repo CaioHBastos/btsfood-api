@@ -18,6 +18,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody Restaurante NovoRestaurante) {
+    public ResponseEntity<?> adicionar(@RequestBody @Valid Restaurante NovoRestaurante) {
         try {
             Restaurante restaurante = cadastroRestauranteService.salvar(NovoRestaurante);
             return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
@@ -54,7 +55,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante novoRestaurante) {
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante novoRestaurante) {
         Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(id);
 
         BeanUtils.copyProperties(novoRestaurante, restauranteAtual,

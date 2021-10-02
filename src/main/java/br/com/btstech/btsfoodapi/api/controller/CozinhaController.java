@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,14 +31,14 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha novaCozinha) {
+    public ResponseEntity<Cozinha> adicionar(@RequestBody @Valid Cozinha novaCozinha) {
         Cozinha cozinha = cadastroCozinhaService.salvar(novaCozinha);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cozinha);
     }
 
     @PutMapping("/{id}")
-    public Cozinha atualizar(@PathVariable Long id, @RequestBody Cozinha novaCozinha) {
+    public Cozinha atualizar(@PathVariable Long id, @RequestBody @Valid Cozinha novaCozinha) {
         Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(id);
 
         BeanUtils.copyProperties(novaCozinha, cozinhaAtual, "id");
