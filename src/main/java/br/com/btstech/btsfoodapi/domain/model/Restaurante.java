@@ -1,6 +1,7 @@
 package br.com.btstech.btsfoodapi.domain.model;
 
 import br.com.btstech.btsfoodapi.core.validation.Groups;
+import br.com.btstech.btsfoodapi.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Getter
 @Setter
 @Entity
@@ -36,6 +38,8 @@ public class Restaurante {
     private String nome;
 
     @NotNull
+    //@TaxaFrete
+    //@Multiplo(numero = 5)
     @PositiveOrZero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
