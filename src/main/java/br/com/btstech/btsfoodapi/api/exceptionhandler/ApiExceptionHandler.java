@@ -145,7 +145,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 status, webRequest);
     }
 
-    @ExceptionHandler(NegocioException.class)
+    @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeNegocio(NegocioException exception,
                                                             WebRequest webRequest) {
         HttpStatus status = HttpStatus.CONFLICT;
@@ -159,18 +159,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(exception, problem, new HttpHeaders(), status, webRequest);
     }
 
-    @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> handleEntidadeEmUso(EntidadeEmUsoException exception,
-                                                          WebRequest webRequest) {
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<?> handleNegocio(NegocioException ex, WebRequest request) {
+
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.ERRO_NEGOCIO;
-        String detail = exception.getMessage();
+        String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
                 .build();
 
-        return handleExceptionInternal(exception, problem, new HttpHeaders(), status, webRequest);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @Override
