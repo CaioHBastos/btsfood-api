@@ -1,5 +1,9 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.assembler.EstadoInputDisassembler;
+import br.com.btstech.btsfoodapi.api.assembler.EstadoModelAssembler;
+import br.com.btstech.btsfoodapi.api.model.EstadoModel;
+import br.com.btstech.btsfoodapi.api.model.input.EstadoInput;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroEstadoService;
@@ -19,33 +23,42 @@ public class EstadoController {
 
     private EstadoRepository estadoRepository;
     private CadastroEstadoService cadastroEstadoService;
+    private EstadoModelAssembler estadoModelAssembler;
+    private EstadoInputDisassembler estadoInputDisassembler;
 
     @GetMapping
-    public List<Estado> listar() {
-        return estadoRepository.findAll();
+    public List<EstadoModel> listar() {
+        List<Estado> todosEstados = estadoRepository.findAll();
+
+        return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long id) {
+    public ResponseEntity<EstadoModel> buscar(@PathVariable Long id) {
         Estado estado = cadastroEstadoService.buscarOuFalhar(id);
+        EstadoModel estadoModel = estadoModelAssembler.toModel(estado);
 
-        return ResponseEntity.ok(estado);
+        return ResponseEntity.ok(estadoModel);
     }
 
     @PostMapping
-    public ResponseEntity<Estado> adicionar(@RequestBody @Valid Estado novoEstado) {
-        Estado estado = cadastroEstadoService.salvar(novoEstado);
-        return ResponseEntity.status(HttpStatus.CREATED).body(estado);
+    public ResponseEntity<EstadoModel> adicionar(@RequestBody @Valid EstadoInput novoEstado) {
+        Estado estado = estadoInputDisassembler.toDomainObject(novoEstado);
+        estado = cadastroEstadoService.salvar(estado);
+        EstadoModel estadoModel = estadoModelAssembler.toModel(estado);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(estadoModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long id, @RequestBody @Valid Estado novoEstado) {
+    public ResponseEntity<EstadoModel> atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput novoEstado) {
         Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(id);
-
-        BeanUtils.copyProperties(novoEstado, estadoAtual, "id");
+        estadoInputDisassembler.copyToDomainObject(novoEstado, estadoAtual);
 
         Estado estadoSalvo = cadastroEstadoService.salvar(estadoAtual);
-        return ResponseEntity.ok(estadoSalvo);
+        EstadoModel estadoModel = estadoModelAssembler.toModel(estadoSalvo);
+
+        return ResponseEntity.ok(estadoModel);
     }
 
     @DeleteMapping("/{id}")
