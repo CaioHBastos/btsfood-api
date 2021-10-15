@@ -79,6 +79,18 @@ public class RestauranteController {
         }
     }
 
+    @PutMapping("/{id}/ativo")
+    public ResponseEntity<Void> ativar(@PathVariable Long id) {
+        cadastroRestauranteService.ativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/ativo")
+    public ResponseEntity<Void> inativar(@PathVariable Long id) {
+        cadastroRestauranteService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     /*@PatchMapping("/{id}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos,
                                               HttpServletRequest request) {
