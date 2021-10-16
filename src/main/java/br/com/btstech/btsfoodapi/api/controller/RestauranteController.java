@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.assembler.RestauranteInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.RestauranteModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.api.model.input.RestauranteInput;
+import br.com.btstech.btsfoodapi.domain.exception.CidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.CozinhaNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
@@ -74,7 +75,7 @@ public class RestauranteController {
             RestauranteModel restauranteModel = restauranteModelAssembler.toModel(restauranteSalvo);
             return ResponseEntity.ok(restauranteModel);
 
-        } catch (CozinhaNaoEncontradaException exception) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException exception) {
             throw new NegocioException(exception.getMessage());
         }
     }
