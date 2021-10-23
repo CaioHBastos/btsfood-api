@@ -92,6 +92,18 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/abertura")
+    public ResponseEntity<Void> abrir(@PathVariable("id") Long restauranteId) {
+        cadastroRestauranteService.abrir(restauranteId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/fechamento")
+    public ResponseEntity<Void> fechar(@PathVariable("id") Long restauranteId) {
+        cadastroRestauranteService.fechar(restauranteId);
+        return ResponseEntity.noContent().build();
+    }
+
     /*@PatchMapping("/{id}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos,
                                               HttpServletRequest request) {

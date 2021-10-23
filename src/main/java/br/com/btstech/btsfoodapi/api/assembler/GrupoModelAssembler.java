@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ public class GrupoModelAssembler {
         return modelMapper.map(grupo, GrupoModel.class);
     }
     
-    public List<GrupoModel> toCollectionModel(List<Grupo> grupos) {
+    public List<GrupoModel> toCollectionModel(Collection<Grupo> grupos) {
         return grupos.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
