@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,21 +44,6 @@ public class RestauranteController {
     public List<RestauranteModel> listarResumido() {
         return listar();
     }
-
-    /*@GetMapping
-    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-        List<RestauranteModel> restauranteModels = restauranteModelAssembler.toCollectionModel(restaurantes);
-
-        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restauranteModels);
-        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-
-        if ("completo".equalsIgnoreCase(projecao)) {
-            restaurantesWrapper.setSerializationView(null);
-        }
-
-        return restaurantesWrapper;
-    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity<RestauranteModel> buscar(@PathVariable Long id) {
@@ -151,6 +135,22 @@ public class RestauranteController {
             throw new NegocioException(exception.getMessage(), exception);
         }
     }
+
+
+    /*@GetMapping
+    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+        List<RestauranteModel> restauranteModels = restauranteModelAssembler.toCollectionModel(restaurantes);
+
+        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restauranteModels);
+        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+
+        if ("completo".equalsIgnoreCase(projecao)) {
+            restaurantesWrapper.setSerializationView(null);
+        }
+
+        return restaurantesWrapper;
+    }*/
 
     /*@PatchMapping("/{id}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos,

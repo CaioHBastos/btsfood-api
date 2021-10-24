@@ -12,9 +12,13 @@ import br.com.btstech.btsfoodapi.domain.model.Pedido;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.repository.PedidoRepository;
 import br.com.btstech.btsfoodapi.domain.service.EmissaoPedidoService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +34,25 @@ public class PedidoController {
     private PedidoModelAssembler pedidoModelAssembler;
     private PedidoResumoModelAssembler pedidoResumoModelAssembler;
     private PedidoInputDisassembler pedidoInputDisassembler;
+
+    /*@GetMapping
+    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+        List<Pedido> todosPedidos = pedidoRepository.findAll();
+        List<PedidoResumoModel> pedidoModels = pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
+
+        MappingJacksonValue pedidoWrapper = new MappingJacksonValue(pedidoModels);
+
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+        filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+
+        if (StringUtils.isNotBlank(campos)) {
+            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+        }
+
+        pedidoWrapper.setFilters(filterProvider);
+
+        return pedidoWrapper;
+    }*/
 
     @GetMapping
     public ResponseEntity<List<PedidoResumoModel>> listar() {
