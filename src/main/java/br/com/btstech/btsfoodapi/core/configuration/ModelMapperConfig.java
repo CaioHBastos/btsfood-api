@@ -1,7 +1,9 @@
 package br.com.btstech.btsfoodapi.core.configuration;
 
 import br.com.btstech.btsfoodapi.api.model.EnderecoModel;
+import br.com.btstech.btsfoodapi.api.model.input.ItemPedidoInput;
 import br.com.btstech.btsfoodapi.domain.model.Endereco;
+import br.com.btstech.btsfoodapi.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,9 @@ public class ModelMapperConfig {
         enderecoToEnderecoModelTypeMap.<String>addMapping(
                 enderecosource -> enderecosource.getCidade().getEstado().getNome(),
                 (enderecoDestination, enderecoValue) -> enderecoDestination.getCidade().setEstado(enderecoValue));
+
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
 
         return modelMapper;
 
