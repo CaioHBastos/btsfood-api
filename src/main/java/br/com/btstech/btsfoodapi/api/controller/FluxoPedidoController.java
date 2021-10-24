@@ -10,28 +10,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/pedidos/{id}")
+@RequestMapping(value = "/pedidos/{codigoPedido}")
 public class FluxoPedidoController {
 
     private FluxoPedidoService fluxoPedidoService;
 
     @PutMapping("/confirmacao")
-    public ResponseEntity<Void> confirmar(@PathVariable("id") Long pedidoId) {
-        fluxoPedidoService.confirmar(pedidoId);
+    public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
+        fluxoPedidoService.confirmar(codigoPedido);
 
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/cancelamento")
-    public ResponseEntity<Void> cancelar(@PathVariable("id") Long pedidoId) {
-        fluxoPedidoService.cancelar(pedidoId);
+    public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
+        fluxoPedidoService.cancelar(codigoPedido);
 
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/entrega")
-    public ResponseEntity<Void> entregar(@PathVariable("id") Long pedidoId) {
-        fluxoPedidoService.entregar(pedidoId);
+    public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
+        fluxoPedidoService.entregar(codigoPedido);
 
         return ResponseEntity.noContent().build();
     }

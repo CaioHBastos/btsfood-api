@@ -39,9 +39,9 @@ public class PedidoController {
         return ResponseEntity.ok(pedidoModels);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PedidoModel> buscar(@PathVariable("id") Long pedidoId) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);
+    @GetMapping("/{codigoPedido}")
+    public ResponseEntity<PedidoModel> buscar(@PathVariable String codigoPedido) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
         PedidoModel pedidoModel = pedidoModelAssembler.toModel(pedido);
 
         return ResponseEntity.ok(pedidoModel);
