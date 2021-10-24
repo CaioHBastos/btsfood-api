@@ -7,6 +7,7 @@ import br.com.btstech.btsfoodapi.api.model.input.RestauranteInput;
 import br.com.btstech.btsfoodapi.domain.exception.CidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.CozinhaNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
+import br.com.btstech.btsfoodapi.domain.exception.RestauranteNaoEncontradoException;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.repository.RestauranteRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
@@ -102,6 +103,28 @@ public class RestauranteController {
     public ResponseEntity<Void> fechar(@PathVariable("id") Long restauranteId) {
         cadastroRestauranteService.fechar(restauranteId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/ativacoes")
+    public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+        try {
+            cadastroRestauranteService.ativar(restauranteIds);
+            return ResponseEntity.noContent().build();
+
+        } catch (RestauranteNaoEncontradoException exception) {
+            throw new NegocioException(exception.getMessage(), exception);
+        }
+    }
+
+    @DeleteMapping("/ativacoes")
+    public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+        try {
+            cadastroRestauranteService.inativar(restauranteIds);
+            return ResponseEntity.noContent().build();
+
+        } catch (RestauranteNaoEncontradoException exception) {
+            throw new NegocioException(exception.getMessage(), exception);
+        }
     }
 
     /*@PatchMapping("/{id}")
