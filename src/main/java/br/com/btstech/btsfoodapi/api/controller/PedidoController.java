@@ -11,7 +11,9 @@ import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.model.Pedido;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.repository.PedidoRepository;
+import br.com.btstech.btsfoodapi.domain.repository.filter.PedidoFilter;
 import br.com.btstech.btsfoodapi.domain.service.EmissaoPedidoService;
+import br.com.btstech.btsfoodapi.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
@@ -55,8 +57,8 @@ public class PedidoController {
     }*/
 
     @GetMapping
-    public ResponseEntity<List<PedidoResumoModel>> listar() {
-        List<Pedido> todosPedidos = pedidoRepository.findAll();
+    public ResponseEntity<List<PedidoResumoModel>> pesquisar(PedidoFilter filtro) {
+        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
         List<PedidoResumoModel> pedidoModels = pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
 
         return ResponseEntity.ok(pedidoModels);

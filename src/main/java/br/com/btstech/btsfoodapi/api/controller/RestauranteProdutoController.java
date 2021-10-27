@@ -29,10 +29,17 @@ public class RestauranteProdutoController {
     private ProdutoInputDisassembler produtoInputDisassembler;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoModel>> listar(@PathVariable Long restauranteId) {
+    public ResponseEntity<List<ProdutoModel>> listar(@PathVariable Long restauranteId,
+                                                     @RequestParam(required = false) boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        List<Produto> todosProdutos = produtoRepository.findByRestaurante(restaurante);
+        List<Produto> todosProdutos;
+
+        if (incluirInativos) {
+            todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
+        } else {
+            todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
         List<ProdutoModel> produtoModels = produtoModelAssembler.toCollectionModel(todosProdutos);
 
         return ResponseEntity.ok(produtoModels);
