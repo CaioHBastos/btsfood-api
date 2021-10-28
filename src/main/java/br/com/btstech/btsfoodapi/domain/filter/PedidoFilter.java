@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.domain.repository.filter;
+package br.com.btstech.btsfoodapi.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.infrastructure.repository.spec;
 
 import br.com.btstech.btsfoodapi.domain.model.Pedido;
-import br.com.btstech.btsfoodapi.domain.repository.filter.PedidoFilter;
+import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
