@@ -8,6 +8,10 @@ import br.com.btstech.btsfoodapi.domain.model.Cozinha;
 import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroCozinhaService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +30,11 @@ public class CozinhaController {
     private CozinhaInputDisassembler cozinhaInputDisassembler;
 
     @GetMapping
-    public List<CozinhaModel> listar() {
-        List<Cozinha> todasCozinhas = cozinhaRepository.findAll();
+    public Page<CozinhaModel> listar(Pageable pageable) {
+        Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+        List<CozinhaModel> cozinhaModels = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
 
-        return cozinhaModelAssembler.toCollectionModel(todasCozinhas);
+        return new PageImpl<>(cozinhaModels, pageable, cozinhasPage.getTotalElements());
     }
 
     @GetMapping("/{id}")

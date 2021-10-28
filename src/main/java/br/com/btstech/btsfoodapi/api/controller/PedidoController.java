@@ -14,13 +14,12 @@ import br.com.btstech.btsfoodapi.domain.repository.PedidoRepository;
 import br.com.btstech.btsfoodapi.domain.repository.filter.PedidoFilter;
 import br.com.btstech.btsfoodapi.domain.service.EmissaoPedidoService;
 import br.com.btstech.btsfoodapi.infrastructure.repository.spec.PedidoSpecs;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,11 +56,17 @@ public class PedidoController {
     }*/
 
     @GetMapping
-    public ResponseEntity<List<PedidoResumoModel>> pesquisar(PedidoFilter filtro) {
-        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
-        List<PedidoResumoModel> pedidoModels = pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
+    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(
+                PedidoSpecs.usandoFiltro(filtro), pageable);
 
-        return ResponseEntity.ok(pedidoModels);
+        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler
+                .toCollectionModel(pedidosPage.getContent());
+
+        Page<PedidoResumoModel> pedidosResumoModelPage = new PageImpl<>(
+                pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+
+        return pedidosResumoModelPage;
     }
 
     @GetMapping("/{codigoPedido}")
