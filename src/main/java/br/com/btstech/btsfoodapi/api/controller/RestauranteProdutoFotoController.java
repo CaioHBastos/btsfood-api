@@ -1,40 +1,47 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.assembler.FotoProdutoModelAssembler;
+import br.com.btstech.btsfoodapi.api.model.FotoProdutoModel;
 import br.com.btstech.btsfoodapi.api.model.input.FotoProdutoInput;
+import br.com.btstech.btsfoodapi.domain.model.FotoProduto;
+import br.com.btstech.btsfoodapi.domain.model.Produto;
+import br.com.btstech.btsfoodapi.domain.service.CadastroProdutoService;
+import br.com.btstech.btsfoodapi.domain.service.CatalogoFotoProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
+    private CadastroProdutoService cadastroProdutoService;
+    private CatalogoFotoProdutoService catalogoFotoProdutoService;
+    private FotoProdutoModelAssembler fotoProdutoModelAssembler;
+
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                              @Valid FotoProdutoInput fotoProdutoInput) {
+    public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
+                                          @Valid FotoProdutoInput fotoProdutoInput) {
 
-        var nomeArquivo = UUID.randomUUID() + "_" + fotoProdutoInput.getArquivo().getOriginalFilename();
+        Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
+        MultipartFile arquivo = fotoProdutoInput.getArquivo();
 
-        var arquivoFoto = Path.of("/home/caiobastos/Pictures/app/catalogo", nomeArquivo);
+        FotoProduto fotoProduto = new FotoProduto();
+        fotoProduto.setProduto(produto);
+        fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
+        fotoProduto.setContentType(arquivo.getContentType());
+        fotoProduto.setTamanho(arquivo.getSize());
+        fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
 
-        System.out.println(fotoProdutoInput.getDescricao());
-        System.out.println(arquivoFoto);
-        System.out.println(fotoProdutoInput.getArquivo().getContentType());
+        FotoProduto fotoSalva = catalogoFotoProdutoService.salvar(fotoProduto);
 
-        try {
-            fotoProdutoInput.getArquivo().transferTo(arquivoFoto);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 }
