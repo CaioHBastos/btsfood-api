@@ -1,5 +1,7 @@
 package br.com.btstech.btsfoodapi.domain.service;
 
+import br.com.btstech.btsfoodapi.domain.exception.FormaPagamentoNaoEncontradaException;
+import br.com.btstech.btsfoodapi.domain.exception.FotoProdutoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.FotoProduto;
 import br.com.btstech.btsfoodapi.domain.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
@@ -21,11 +23,13 @@ public class CatalogoFotoProdutoService {
         Long restauranteId = foto.getRestauranteId();
         Long produtoId = foto.getProduto().getId();
         String nomeNovoArquivo = fotoStorageService.gerarNomeArquivo(foto.getNomeArquivo());
+        String nomeArquivoExistente = null;
 
         Optional<FotoProduto> fotoExistente =
                 produtoRepository.findFotoById(restauranteId, produtoId);
 
         if (fotoExistente.isPresent()) {
+            nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
             produtoRepository.delete(fotoExistente.get());
         }
 
@@ -38,8 +42,13 @@ public class CatalogoFotoProdutoService {
                 .inputStream(dadosArquivo)
                 .build();
 
-        fotoStorageService.armazenar(novaFoto);
+        fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 
         return foto;
+    }
+
+    public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoById(restauranteId, produtoId)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
     }
 }
