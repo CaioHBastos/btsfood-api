@@ -1,6 +1,5 @@
 package br.com.btstech.btsfoodapi.domain.service;
 
-import br.com.btstech.btsfoodapi.domain.exception.FormaPagamentoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.FotoProdutoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.FotoProduto;
 import br.com.btstech.btsfoodapi.domain.repository.ProdutoRepository;
@@ -39,6 +38,7 @@ public class CatalogoFotoProdutoService {
 
         FotoStorageService.NovaFoto novaFoto = FotoStorageService.NovaFoto.builder()
                 .nomeArquivo(foto.getNomeArquivo())
+                .contentType(foto.getContentType())
                 .inputStream(dadosArquivo)
                 .build();
 
