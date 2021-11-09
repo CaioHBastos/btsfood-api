@@ -42,7 +42,7 @@ public class RestauranteProdutoFotoController {
 
     @GetMapping
     public ResponseEntity<?> servir(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                                                          @RequestHeader(name = "Accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+                                    @RequestHeader(name = "Accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
         try {
             FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
