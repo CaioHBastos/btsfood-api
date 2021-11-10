@@ -1,11 +1,14 @@
 package br.com.btstech.btsfoodapi.domain.model;
 
+import br.com.btstech.btsfoodapi.domain.event.PedidoCanceladoEvent;
+import br.com.btstech.btsfoodapi.domain.event.PedidoConfirmadoEvent;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,7 +21,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-public class Pedido {
+public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -72,6 +75,8 @@ public class Pedido {
     public void confirmar() {
         setStatus(StatusPedido.CONFIRMADO);
         setDataConfirmacao(OffsetDateTime.now());
+
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
     public void entregar() {
@@ -82,6 +87,8 @@ public class Pedido {
     public void cancelar() {
         setStatus(StatusPedido.CANCELADO);
         setDataCancelamento(OffsetDateTime.now());
+
+        registerEvent(new PedidoCanceladoEvent(this));
     }
 
     private void setStatus(StatusPedido novoStatus) {
