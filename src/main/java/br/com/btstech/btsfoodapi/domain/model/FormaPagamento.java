@@ -4,8 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Getter
@@ -20,6 +22,9 @@ public class FormaPagamento {
 
     @Column(nullable = false)
     private String descricao;
+
+    @UpdateTimestamp
+    private OffsetDateTime dataAtualizacao;
 
     @Override
     public boolean equals(Object o) {
