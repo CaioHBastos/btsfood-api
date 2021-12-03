@@ -9,13 +9,12 @@ import br.com.btstech.btsfoodapi.api.model.input.PedidoInput;
 import br.com.btstech.btsfoodapi.core.data.PageableTranslator;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
+import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
 import br.com.btstech.btsfoodapi.domain.model.Pedido;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.repository.PedidoRepository;
-import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
 import br.com.btstech.btsfoodapi.domain.service.EmissaoPedidoService;
 import br.com.btstech.btsfoodapi.infrastructure.repository.spec.PedidoSpecs;
-import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -101,11 +101,16 @@ public class PedidoController {
     }
 
     private Pageable traduzirPageable(Pageable apiPageable) {
-        var mapeamento = ImmutableMap.of(
+        var mapeamento = Map.of(
                 "codigo", "codigo",
+                "subtotal", "subtotal",
+                "taxaFrete", "taxaFrete",
+                "valorTotal", "valorTotal",
+                "dataCriacao", "dataCriacao",
                 "restaurante.nome", "restaurante.nome",
-                "cliente.nome", "cliente.nome",
-                "valorTotal", "valorTotal"
+                "restaurante.id", "restaurante.id",
+                "cliente.id", "cliente.id",
+                "cliente.nome", "cliente.nome"
         );
 
         return PageableTranslator.translate(apiPageable, mapeamento);
