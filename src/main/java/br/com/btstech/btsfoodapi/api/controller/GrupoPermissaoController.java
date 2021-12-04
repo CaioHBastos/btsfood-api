@@ -2,9 +2,11 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.PermissaoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.PermissaoModel;
+import br.com.btstech.btsfoodapi.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/grupos/{grupoId}/permissoes")
-public class GrupoPermissaoController {
+@RequestMapping(path = "/grupos/{grupoId}/permissoes",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
     private CadastroGrupoService cadastroGrupo;
     private PermissaoModelAssembler permissaoModelAssembler;

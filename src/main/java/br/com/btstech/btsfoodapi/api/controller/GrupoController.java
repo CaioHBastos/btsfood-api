@@ -2,7 +2,7 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.GrupoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.GrupoModelAssembler;
-import br.com.btstech.btsfoodapi.api.controller.openapi.GrupoControllerOpenApi;
+import br.com.btstech.btsfoodapi.api.openapi.controller.GrupoControllerOpenApi;
 import br.com.btstech.btsfoodapi.api.model.GrupoModel;
 import br.com.btstech.btsfoodapi.api.model.input.GrupoInput;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
@@ -10,6 +10,7 @@ import br.com.btstech.btsfoodapi.domain.repository.GrupoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping(path = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoController implements GrupoControllerOpenApi {
 
     private GrupoRepository grupoRepository;

@@ -6,6 +6,7 @@ import br.com.btstech.btsfoodapi.api.assembler.PedidoResumoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.PedidoModel;
 import br.com.btstech.btsfoodapi.api.model.PedidoResumoModel;
 import br.com.btstech.btsfoodapi.api.model.input.PedidoInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.PedidoControllerOpenApi;
 import br.com.btstech.btsfoodapi.core.data.PageableTranslator;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +31,8 @@ import java.util.Map;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
 
     private PedidoRepository pedidoRepository;
     private EmissaoPedidoService emissaoPedido;

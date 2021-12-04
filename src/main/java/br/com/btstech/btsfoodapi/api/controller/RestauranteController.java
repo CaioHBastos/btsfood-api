@@ -5,6 +5,7 @@ import br.com.btstech.btsfoodapi.api.assembler.RestauranteModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.api.model.input.RestauranteInput;
 import br.com.btstech.btsfoodapi.api.model.view.RestauranteView;
+import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.exception.CidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.CozinhaNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
@@ -15,6 +16,7 @@ import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi {
 
     private RestauranteRepository restauranteRepository;
     private CadastroRestauranteService cadastroRestauranteService;
@@ -41,7 +43,7 @@ public class RestauranteController {
 
     @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
-    public List<RestauranteModel> listarResumido() {
+    public List<RestauranteModel> listarApenasNomes() {
         return listar();
     }
 

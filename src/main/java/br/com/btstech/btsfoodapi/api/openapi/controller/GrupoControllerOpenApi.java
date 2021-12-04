@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.api.controller.openapi;
+package br.com.btstech.btsfoodapi.api.openapi.controller;
 
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.GrupoModel;
@@ -20,7 +20,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
     })
     GrupoModel buscar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
                     Long grupoId);
 
     @ApiOperation("Cadastra um grupo")
@@ -28,7 +28,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(code = 201, message = "Grupo cadastrado"),
     })
     ResponseEntity<GrupoModel> adicionar(
-            @ApiParam(name = "corpo", value = "Representação de um novo grupo")
+            @ApiParam(name = "corpo", value = "Representação de um novo grupo", required = true)
                     GrupoInput grupoInput);
 
     @ApiOperation("Atualiza um grupo por ID")
@@ -37,7 +37,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
     })
     GrupoModel atualizar(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
                     Long grupoId,
 
             @ApiParam(name = "corpo", value = "Representação de um grupo com os novos dados")
@@ -49,7 +49,7 @@ public interface GrupoControllerOpenApi {
             @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
     })
     ResponseEntity<Void> remover(
-            @ApiParam(value = "ID de um grupo", example = "1")
+            @ApiParam(value = "ID de um grupo", example = "1", required = true)
                     Long grupoId);
 
 }

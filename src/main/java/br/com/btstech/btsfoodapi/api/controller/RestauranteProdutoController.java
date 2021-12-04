@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.assembler.ProdutoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.ProdutoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.ProdutoModel;
 import br.com.btstech.btsfoodapi.api.model.input.ProdutoInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteProdutoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Produto;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.repository.ProdutoRepository;
@@ -11,6 +12,7 @@ import br.com.btstech.btsfoodapi.domain.service.CadastroProdutoService;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +21,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
     private ProdutoRepository produtoRepository;
     private CadastroProdutoService cadastroProduto;

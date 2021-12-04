@@ -1,7 +1,9 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.openapi.controller.FluxoPedidoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.service.FluxoPedidoService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -10,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/pedidos/{codigoPedido}")
-public class FluxoPedidoController {
+@RequestMapping(path = "/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     private FluxoPedidoService fluxoPedidoService;
 

@@ -3,6 +3,7 @@ package br.com.btstech.btsfoodapi.api.controller;
 import br.com.btstech.btsfoodapi.api.assembler.FotoProdutoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.FotoProdutoModel;
 import br.com.btstech.btsfoodapi.api.model.input.FotoProdutoInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.FotoProduto;
 import br.com.btstech.btsfoodapi.domain.model.Produto;
@@ -25,22 +26,23 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     private CadastroProdutoService cadastroProdutoService;
     private CatalogoFotoProdutoService catalogoFotoProdutoService;
     private FotoProdutoModelAssembler fotoProdutoModelAssembler;
     private FotoStorageService fotoStorageService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
 
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servir(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                     @RequestHeader(name = "Accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
@@ -73,11 +75,12 @@ public class RestauranteProdutoFotoController {
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FotoProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+    public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
+                                          @Valid FotoProdutoInput fotoProdutoInput,
+                                          @RequestPart MultipartFile arquivo) throws IOException {
 
         Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
-        MultipartFile arquivo = fotoProdutoInput.getArquivo();
+        //MultipartFile arquivo = fotoProdutoInput.getArquivo();
 
         FotoProduto fotoProduto = new FotoProduto();
         fotoProduto.setProduto(produto);

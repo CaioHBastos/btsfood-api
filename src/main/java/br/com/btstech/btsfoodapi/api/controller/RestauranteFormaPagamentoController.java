@@ -2,9 +2,11 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.FormaPagamentoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.FormaPagamentoModel;
+import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/restaurantes/{id}/formas-pagamento")
-public class RestauranteFormaPagamentoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
     private CadastroRestauranteService cadastroRestauranteService;
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;

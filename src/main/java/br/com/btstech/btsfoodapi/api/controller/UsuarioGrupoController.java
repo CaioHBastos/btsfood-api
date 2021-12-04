@@ -2,9 +2,11 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.GrupoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.GrupoModel;
+import br.com.btstech.btsfoodapi.api.openapi.controller.UsuarioGrupoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.service.CadastroUsuarioService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/usuarios/{usuarioId}/grupos")
-public class UsuarioGrupoController {
+@RequestMapping(path = "/usuarios/{usuarioId}/grupos",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
 
     private CadastroUsuarioService cadastroUsuario;
     private GrupoModelAssembler grupoModelAssembler;

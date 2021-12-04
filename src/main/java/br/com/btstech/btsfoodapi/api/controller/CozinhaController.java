@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.assembler.CozinhaInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.CozinhaModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.CozinhaModel;
 import br.com.btstech.btsfoodapi.api.model.input.CozinhaInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.CozinhaControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Cozinha;
 import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroCozinhaService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/cozinhas")
-public class CozinhaController {
+@RequestMapping(path = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi {
 
     private CozinhaRepository cozinhaRepository;
     private CadastroCozinhaService cadastroCozinhaService;

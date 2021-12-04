@@ -4,17 +4,18 @@ import br.com.btstech.btsfoodapi.api.assembler.FormaPagamentoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.FormaPagamentoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.FormaPagamentoModel;
 import br.com.btstech.btsfoodapi.api.model.input.FormaPagamentoInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.FormaPagamento;
 import br.com.btstech.btsfoodapi.domain.repository.FormaPagamentoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroFormaPagamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
-import org.springframework.web.servlet.handler.DispatcherServletWebRequest;
 
 import javax.validation.Valid;
 import java.time.OffsetDateTime;
@@ -23,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/formas-pagamento")
-public class FormaPagamentoController {
+@RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     private FormaPagamentoRepository formaPagamentoRepository;
     private CadastroFormaPagamentoService cadastroFormaPagamento;
@@ -32,7 +33,7 @@ public class FormaPagamentoController {
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
     
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(DispatcherServletWebRequest request) {
+    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String eTag = "0";

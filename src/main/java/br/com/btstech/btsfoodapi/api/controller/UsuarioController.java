@@ -6,11 +6,13 @@ import br.com.btstech.btsfoodapi.api.model.UsuarioModel;
 import br.com.btstech.btsfoodapi.api.model.input.SenhaInput;
 import br.com.btstech.btsfoodapi.api.model.input.UsuarioComSenhaInput;
 import br.com.btstech.btsfoodapi.api.model.input.UsuarioInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.UsuarioControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.repository.UsuarioRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroUsuarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,8 +20,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/usuarios")
-public class UsuarioController {
+@RequestMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioController implements UsuarioControllerOpenApi {
 
     private UsuarioRepository usuarioRepository;
     private CadastroUsuarioService cadastroUsuario;

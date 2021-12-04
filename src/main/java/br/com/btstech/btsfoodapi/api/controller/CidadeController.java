@@ -2,7 +2,7 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.CidadeInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.CidadeModelAssembler;
-import br.com.btstech.btsfoodapi.api.controller.openapi.CidadeControllerOpenApi;
+import br.com.btstech.btsfoodapi.api.openapi.controller.CidadeControllerOpenApi;
 import br.com.btstech.btsfoodapi.api.model.CidadeModel;
 import br.com.btstech.btsfoodapi.api.model.input.CidadeInput;
 import br.com.btstech.btsfoodapi.domain.exception.EstadoNaoEncontradaException;
@@ -12,6 +12,7 @@ import br.com.btstech.btsfoodapi.domain.repository.CidadeRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroCidadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/cidades")
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenApi {
 
     private CidadeRepository cidadeRepository;

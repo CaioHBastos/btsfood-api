@@ -4,12 +4,14 @@ import br.com.btstech.btsfoodapi.api.assembler.EstadoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.EstadoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.EstadoModel;
 import br.com.btstech.btsfoodapi.api.model.input.EstadoInput;
+import br.com.btstech.btsfoodapi.api.openapi.controller.EstadoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroEstadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/estados")
-public class EstadoController {
+@RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EstadoController implements EstadoControllerOpenApi {
 
     private EstadoRepository estadoRepository;
     private CadastroEstadoService cadastroEstadoService;

@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.api.controller.openapi;
+package br.com.btstech.btsfoodapi.api.openapi.controller;
 
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.CidadeModel;
@@ -19,14 +19,14 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
             @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    ResponseEntity<CidadeModel> buscar(@ApiParam(value = "Id de uma cidade", example = "1")
+    ResponseEntity<CidadeModel> buscar(@ApiParam(value = "Id de uma cidade", example = "1", required = true)
                                               Long id);
 
     @ApiOperation("Cadastra uma cidade")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Cidade cadastrada")
     })
-    ResponseEntity<CidadeModel> adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+    ResponseEntity<CidadeModel> adicionar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade", required = true)
                                                  CidadeInput novaCidade);
 
     @ApiOperation("Atualiza uma cidade por ID")
@@ -34,7 +34,7 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(code = 200, message = "Cidade atualizada"),
             @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    ResponseEntity<CidadeModel> atualizar(@ApiParam(value = "Id de uma cidade", example = "1")
+    ResponseEntity<CidadeModel> atualizar(@ApiParam(value = "Id de uma cidade", example = "1", required = true)
                                                  Long id,
                                                  @ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados")
                                                  CidadeInput novaCidade) ;
@@ -44,6 +44,6 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(code = 204, message = "Cidade excluida"),
             @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    ResponseEntity<Void> remover(@ApiParam(value = "Id de uma cidade", example = "1")
+    ResponseEntity<Void> remover(@ApiParam(value = "Id de uma cidade", example = "1", required = true)
                                         Long id) ;
 }

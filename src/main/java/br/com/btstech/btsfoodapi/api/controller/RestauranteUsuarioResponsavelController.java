@@ -2,9 +2,11 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.UsuarioModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.UsuarioModel;
+import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +14,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/responsaveis")
-public class RestauranteUsuarioResponsavelController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/responsaveis",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
     private CadastroRestauranteService cadastroRestaurante;
     private UsuarioModelAssembler usuarioModelAssembler;
