@@ -2,6 +2,7 @@ package br.com.btstech.btsfoodapi.api.controller;
 
 import br.com.btstech.btsfoodapi.api.assembler.GrupoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.GrupoModelAssembler;
+import br.com.btstech.btsfoodapi.api.controller.openapi.GrupoControllerOpenApi;
 import br.com.btstech.btsfoodapi.api.model.GrupoModel;
 import br.com.btstech.btsfoodapi.api.model.input.GrupoInput;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
     private GrupoRepository grupoRepository;
     private CadastroGrupoService cadastroGrupo;
