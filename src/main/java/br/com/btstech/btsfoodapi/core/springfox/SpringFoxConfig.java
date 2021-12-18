@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.core.openapi;
+package br.com.btstech.btsfoodapi.core.springfox;
 
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.CozinhaModel;

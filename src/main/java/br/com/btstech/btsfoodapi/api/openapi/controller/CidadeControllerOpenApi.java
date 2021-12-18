@@ -4,15 +4,14 @@ import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.CidadeModel;
 import br.com.btstech.btsfoodapi.api.model.input.CidadeInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Api(tags = "Cidades")
 public interface CidadeControllerOpenApi {
 
     @ApiOperation("Lista as cidades")
-    List<CidadeModel> listar();
+    CollectionModel<CidadeModel> listar();
 
     @ApiOperation("Busca uma cidade por ID")
     @ApiResponses({
