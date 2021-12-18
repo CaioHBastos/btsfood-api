@@ -9,7 +9,7 @@ import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroEstadoService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class EstadoController implements EstadoControllerOpenApi {
     private EstadoInputDisassembler estadoInputDisassembler;
 
     @GetMapping
-    public List<EstadoModel> listar() {
+    public CollectionModel<EstadoModel> listar() {
         List<Estado> todosEstados = estadoRepository.findAll();
 
         return estadoModelAssembler.toCollectionModel(todosEstados);

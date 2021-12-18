@@ -4,15 +4,14 @@ import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.EstadoModel;
 import br.com.btstech.btsfoodapi.api.model.input.EstadoInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Api(tags = "Estados")
 public interface EstadoControllerOpenApi {
 
     @ApiOperation("Lista os estados")
-    List<EstadoModel> listar();
+    CollectionModel<EstadoModel> listar();
 
     @ApiOperation("Busca um estado por ID")
     @ApiResponses({
