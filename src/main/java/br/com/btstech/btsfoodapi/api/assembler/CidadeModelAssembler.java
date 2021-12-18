@@ -25,11 +25,9 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 
     @Override
     public CidadeModel toModel(Cidade cidade) {
-        CidadeModel cidadeModel = modelMapper.map(cidade, CidadeModel.class);
 
-        cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                .buscar(cidadeModel.getId()))
-                .withSelfRel());
+        CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
+        modelMapper.map(cidadeModel, cidadeModel);
 
         cidadeModel.add(linkTo(methodOn(CidadeController.class)
                 .listar())

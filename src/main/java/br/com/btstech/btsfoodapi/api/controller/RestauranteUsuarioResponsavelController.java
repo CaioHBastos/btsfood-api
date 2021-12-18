@@ -6,11 +6,13 @@ import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteUsuarioRespon
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @AllArgsConstructor
 @RestController
@@ -22,11 +24,14 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     private UsuarioModelAssembler usuarioModelAssembler;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioModel>> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        List<UsuarioModel> usuarioModels = usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis());
 
-        return ResponseEntity.ok(usuarioModels);
+        return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
+                .removeLinks()
+                .add(linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                        .listar(restauranteId))
+                        .withSelfRel());
     }
 
     @DeleteMapping("/{usuarioId}")
