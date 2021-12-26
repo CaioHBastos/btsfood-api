@@ -12,7 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +31,16 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     private CadastroCozinhaService cadastroCozinhaService;
     private CozinhaModelAssembler cozinhaModelAssembler;
     private CozinhaInputDisassembler cozinhaInputDisassembler;
+    private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
     @GetMapping
-    public Page<CozinhaModel> listar(Pageable pageable) {
+    public PagedModel<CozinhaModel> listar(Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-        List<CozinhaModel> cozinhaModels = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
 
-        return new PageImpl<>(cozinhaModels, pageable, cozinhasPage.getTotalElements());
+        PagedModel<CozinhaModel> cozinhasPagedModel =
+                pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
+
+        return cozinhasPagedModel;
     }
 
     @GetMapping("/{id}")
