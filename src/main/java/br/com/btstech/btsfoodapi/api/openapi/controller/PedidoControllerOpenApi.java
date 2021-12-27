@@ -6,8 +6,8 @@ import br.com.btstech.btsfoodapi.api.model.PedidoResumoModel;
 import br.com.btstech.btsfoodapi.api.model.input.PedidoInput;
 import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
 import io.swagger.annotations.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Pedidos")
@@ -18,7 +18,7 @@ public interface PedidoControllerOpenApi {
                     name = "campos", paramType = "query", type = "string")
     })
     @ApiOperation("Pesquisa os pedidos")
-    Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
+    PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
 
     @ApiOperation("Registra um pedido")
     @ApiResponses({
