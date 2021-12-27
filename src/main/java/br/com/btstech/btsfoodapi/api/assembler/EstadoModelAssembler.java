@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.api.assembler;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.controller.EstadoController;
 import br.com.btstech.btsfoodapi.api.model.EstadoModel;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
@@ -17,6 +18,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    BtsLinks btsLinks;
+
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
@@ -26,7 +30,7 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
         EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(linkTo(EstadoController.class).withRel("estados"));
+        estadoModel.add(btsLinks.linkToEstados("estados"));
 
         return estadoModel;
     }

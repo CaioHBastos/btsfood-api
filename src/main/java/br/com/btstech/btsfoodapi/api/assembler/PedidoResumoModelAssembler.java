@@ -1,11 +1,9 @@
 package br.com.btstech.btsfoodapi.api.assembler;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.controller.PedidoController;
-import br.com.btstech.btsfoodapi.api.controller.RestauranteController;
-import br.com.btstech.btsfoodapi.api.controller.UsuarioController;
 import br.com.btstech.btsfoodapi.api.model.PedidoResumoModel;
 import br.com.btstech.btsfoodapi.domain.model.Pedido;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
@@ -14,14 +12,14 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Component
 public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoResumoModel> {
 
     @Autowired
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
+
+    @Autowired
+    BtsLinks btsLinks;
 
     public PedidoResumoModelAssembler() {
         super(PedidoController.class, PedidoResumoModel.class);
@@ -32,13 +30,12 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
         PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
 
-        pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
+        pedidoModel.add(btsLinks.linkToPedidos());
 
-        pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
-                .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoModel.getRestaurante().add(
+                btsLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoModel.getCliente().add(linkTo(methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoModel.getCliente().add(btsLinks.linkToUsuario(pedido.getCliente().getId()));
 
         return pedidoModel;
     }

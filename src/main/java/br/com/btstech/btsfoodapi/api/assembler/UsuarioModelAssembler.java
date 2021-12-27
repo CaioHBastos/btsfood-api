@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.api.assembler;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.controller.UsuarioController;
 import br.com.btstech.btsfoodapi.api.controller.UsuarioGrupoController;
 import br.com.btstech.btsfoodapi.api.model.UsuarioModel;
@@ -19,6 +20,9 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    BtsLinks btsLinks;
+
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -28,10 +32,8 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
-        usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class)
-                .listar(usuario.getId()))
-                .withRel("grupos-usuario"));
+        usuarioModel.add(btsLinks.linkToUsuarios("usuarios"));
+        usuarioModel.add(btsLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
 
         return usuarioModel;
     }

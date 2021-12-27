@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.assembler.UsuarioModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.UsuarioModel;
 import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
@@ -11,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping(path = "/restaurantes/{restauranteId}/responsaveis",
@@ -22,6 +20,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
     private CadastroRestauranteService cadastroRestaurante;
     private UsuarioModelAssembler usuarioModelAssembler;
+    private BtsLinks btsLinks;
 
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
@@ -29,9 +28,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
-                        .listar(restauranteId))
-                        .withSelfRel());
+                .add(btsLinks.linkToResponsaveisRestaurante(restauranteId));
     }
 
     @DeleteMapping("/{usuarioId}")
