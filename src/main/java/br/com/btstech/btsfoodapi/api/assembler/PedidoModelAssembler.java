@@ -32,6 +32,18 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
         pedidoModel.add(btsLinks.linkToPedidos());
 
+        if (pedido.podeSerConfirmado()) {
+            pedidoModel.add(btsLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+        }
+
+        if (pedido.poderSerCancelado()) {
+            pedidoModel.add(btsLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+        }
+
+        if (pedido.poderSerEntregue()) {
+            pedidoModel.add(btsLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+        }
+
         pedidoModel.getRestaurante().add(
                 btsLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 

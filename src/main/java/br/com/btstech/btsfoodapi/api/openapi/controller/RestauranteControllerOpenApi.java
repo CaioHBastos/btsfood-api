@@ -1,12 +1,13 @@
 package br.com.btstech.btsfoodapi.api.openapi.controller;
 
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
+import br.com.btstech.btsfoodapi.api.model.RestauranteApenasNomeModel;
+import br.com.btstech.btsfoodapi.api.model.RestauranteBasicoModel;
 import br.com.btstech.btsfoodapi.api.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.api.model.input.RestauranteInput;
-import br.com.btstech.btsfoodapi.api.model.view.RestauranteView;
 import br.com.btstech.btsfoodapi.api.openapi.model.RestauranteBasicoModelOpenApi;
-import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -19,11 +20,11 @@ public interface RestauranteControllerOpenApi {
             @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
                     name = "projecao", paramType = "query", type = "string")
     })
-    @JsonView(RestauranteView.Resumo.class)
-    List<RestauranteModel> listar();
+    //@JsonView(RestauranteView.Resumo.class)
+    CollectionModel<RestauranteBasicoModel> listar();
 
     @ApiOperation(value = "Lista restaurantes", hidden = true)
-    List<RestauranteModel> listarApenasNomes();
+    CollectionModel<RestauranteApenasNomeModel> listarApenasNomes();
 
     @ApiOperation("Busca um restaurante por ID")
     @ApiResponses({

@@ -1,10 +1,13 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.assembler.RestauranteApenasNomeModelAssembler;
+import br.com.btstech.btsfoodapi.api.assembler.RestauranteBasicoModelAssembler;
 import br.com.btstech.btsfoodapi.api.assembler.RestauranteInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.RestauranteModelAssembler;
+import br.com.btstech.btsfoodapi.api.model.RestauranteApenasNomeModel;
+import br.com.btstech.btsfoodapi.api.model.RestauranteBasicoModel;
 import br.com.btstech.btsfoodapi.api.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.api.model.input.RestauranteInput;
-import br.com.btstech.btsfoodapi.api.model.view.RestauranteView;
 import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.exception.CidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.CozinhaNaoEncontradaException;
@@ -13,8 +16,8 @@ import br.com.btstech.btsfoodapi.domain.exception.RestauranteNaoEncontradoExcept
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.repository.RestauranteRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,19 +35,23 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     private CadastroRestauranteService cadastroRestauranteService;
     private RestauranteModelAssembler restauranteModelAssembler;
     private RestauranteInputDisassembler restauranteInputDisassembler;
+    private RestauranteBasicoModelAssembler restauranteBasicoModelAssembler;
+    private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
 
-    @JsonView(RestauranteView.Resumo.class)
+    //@JsonView(RestauranteView.Resumo.class)
+    @Override
     @GetMapping
-    public List<RestauranteModel> listar() {
-        List<Restaurante> restaurantes = restauranteRepository.findAll();
-
-        return restauranteModelAssembler.toCollectionModel(restaurantes);
+    public CollectionModel<RestauranteBasicoModel> listar() {
+        return restauranteBasicoModelAssembler
+                .toCollectionModel(restauranteRepository.findAll());
     }
 
-    @JsonView(RestauranteView.ApenasNome.class)
+    //@JsonView(RestauranteView.ApenasNome.class)
+    @Override
     @GetMapping(params = "projecao=apenas-nome")
-    public List<RestauranteModel> listarApenasNomes() {
-        return listar();
+    public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
+        return restauranteApenasNomeModelAssembler
+                .toCollectionModel(restauranteRepository.findAll());
     }
 
     @GetMapping("/{id}")

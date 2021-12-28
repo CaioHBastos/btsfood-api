@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.api.model.view;
+/*package br.com.btstech.btsfoodapi.api.model.view;
 
 public interface RestauranteView {
 
@@ -9,4 +9,4 @@ public interface RestauranteView {
     interface ApenasNome {
 
     }
-}
+}*/
