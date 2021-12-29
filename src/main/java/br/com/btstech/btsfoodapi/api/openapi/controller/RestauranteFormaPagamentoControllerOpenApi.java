@@ -3,9 +3,8 @@ package br.com.btstech.btsfoodapi.api.openapi.controller;
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.FormaPagamentoModel;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteFormaPagamentoControllerOpenApi {
@@ -14,7 +13,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    ResponseEntity<List<FormaPagamentoModel>> listar(
+    ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
                     Long restauranteId);
 

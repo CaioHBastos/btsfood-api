@@ -2,18 +2,13 @@ package br.com.btstech.btsfoodapi.api.assembler;
 
 import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.controller.RestauranteController;
-import br.com.btstech.btsfoodapi.api.model.CozinhaModel;
 import br.com.btstech.btsfoodapi.api.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class RestauranteModelAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel> {
@@ -22,7 +17,7 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
     ModelMapper modelMapper;
 
     @Autowired
-    private BtsLinks btsLinks;
+    BtsLinks btsLinks;
 
     public RestauranteModelAssembler() {
         super(RestauranteController.class, RestauranteModel.class);
@@ -40,6 +35,26 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 
         restauranteModel.getEndereco().getCidade().add(
                 btsLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+
+        if (restaurante.ativacaoPermitida()) {
+            restauranteModel.add(
+                    btsLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        }
+
+        if (restaurante.inativacaoPermitida()) {
+            restauranteModel.add(
+                    btsLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        }
+
+        if (restaurante.aberturaPermitida()) {
+            restauranteModel.add(
+                    btsLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        }
+
+        if (restaurante.fechamentoPermitido()) {
+            restauranteModel.add(
+                    btsLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
 
         restauranteModel.add(btsLinks.linkToRestauranteFormasPagamento(restaurante.getId(),
                 "formas-pagamento"));

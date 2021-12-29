@@ -1,16 +1,16 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.assembler.FormaPagamentoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.FormaPagamentoModel;
 import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -20,13 +20,18 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 
     private CadastroRestauranteService cadastroRestauranteService;
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
+    private BtsLinks btsLinks;
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(@PathVariable("id") Long restauranteId) {
+    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(@PathVariable("id") Long restauranteId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-        List<FormaPagamentoModel> formaPagamentoModels = formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento());
 
-        return ResponseEntity.ok(formaPagamentoModels);
+        CollectionModel<FormaPagamentoModel> formasPagamento =
+                formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
+                .removeLinks()
+                .add(btsLinks.linkToRestauranteFormasPagamento(restauranteId));
+
+        return ResponseEntity.ok(formasPagamento);
     }
 
     @PutMapping("/{formaPagamentoId}")

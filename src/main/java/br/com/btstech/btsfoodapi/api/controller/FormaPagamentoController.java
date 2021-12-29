@@ -9,6 +9,7 @@ import br.com.btstech.btsfoodapi.domain.model.FormaPagamento;
 import br.com.btstech.btsfoodapi.domain.repository.FormaPagamentoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroFormaPagamentoService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
     
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String eTag = "0";
@@ -50,7 +51,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 
         List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 
-        List<FormaPagamentoModel> formaPagamentoModels =
+        CollectionModel<FormaPagamentoModel> formasPagamentosModel =
                 formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
 
         return ResponseEntity.ok()
@@ -59,7 +60,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 //.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
                 //.cacheControl(CacheControl.noCache())
                 //.cacheControl(CacheControl.noStore())
-                .body(formaPagamentoModels);
+                .body(formasPagamentosModel);
     }
     
     @GetMapping("/{id}")
