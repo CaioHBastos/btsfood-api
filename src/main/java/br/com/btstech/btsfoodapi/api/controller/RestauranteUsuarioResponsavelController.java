@@ -26,9 +26,18 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
+        CollectionModel<UsuarioModel> usuariosModel = usuarioModelAssembler
+                .toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(btsLinks.linkToResponsaveisRestaurante(restauranteId));
+                .add(btsLinks.linkToRestauranteResponsaveis(restauranteId))
+                .add(btsLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+
+        usuariosModel.getContent().stream().forEach(usuarioModel -> {
+            usuarioModel.add(btsLinks.linkToRestauranteResponsavelDesassociacao(
+                    restauranteId, usuarioModel.getId(), "desassociar"));
+        });
+
+        return usuariosModel;
     }
 
     @DeleteMapping("/{usuarioId}")

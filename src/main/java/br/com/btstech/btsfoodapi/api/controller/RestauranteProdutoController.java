@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.assembler.ProdutoInputDisassembler;
 import br.com.btstech.btsfoodapi.api.assembler.ProdutoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.ProdutoModel;
@@ -11,6 +12,7 @@ import br.com.btstech.btsfoodapi.domain.repository.ProdutoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroProdutoService;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +32,11 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     private CadastroRestauranteService cadastroRestaurante;
     private ProdutoModelAssembler produtoModelAssembler;
     private ProdutoInputDisassembler produtoInputDisassembler;
+    private BtsLinks btsLinks;
 
     @GetMapping
-    public ResponseEntity<List<ProdutoModel>> listar(@PathVariable Long restauranteId,
-                                                     @RequestParam(required = false) boolean incluirInativos) {
+    public ResponseEntity<CollectionModel<ProdutoModel>> listar(@PathVariable Long restauranteId,
+                                                                @RequestParam(required = false) Boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
         List<Produto> todosProdutos;
@@ -43,7 +46,9 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         } else {
             todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
         }
-        List<ProdutoModel> produtoModels = produtoModelAssembler.toCollectionModel(todosProdutos);
+
+        CollectionModel<ProdutoModel> produtoModels = produtoModelAssembler.toCollectionModel(todosProdutos)
+                .add(btsLinks.linkToProdutos(restauranteId));
 
         return ResponseEntity.ok(produtoModels);
     }

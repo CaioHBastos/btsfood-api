@@ -1,16 +1,16 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.assembler.PermissaoModelAssembler;
 import br.com.btstech.btsfoodapi.api.model.PermissaoModel;
 import br.com.btstech.btsfoodapi.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -20,13 +20,23 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 
     private CadastroGrupoService cadastroGrupo;
     private PermissaoModelAssembler permissaoModelAssembler;
+    private BtsLinks btsLinks;
 
     @GetMapping
-    public ResponseEntity<List<PermissaoModel>> listar(@PathVariable Long grupoId) {
+    public ResponseEntity<CollectionModel<PermissaoModel>> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
-        List<PermissaoModel> permissaoModels = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
+        CollectionModel<PermissaoModel> permissoesModel
+                = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
+                .removeLinks()
+                .add(btsLinks.linkToGrupoPermissoes(grupoId))
+                .add(btsLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
 
-        return ResponseEntity.ok(permissaoModels);
+        permissoesModel.getContent().forEach(permissaoModel -> {
+            permissaoModel.add(btsLinks.linkToGrupoPermissaoDesassociacao(
+                    grupoId, permissaoModel.getId(), "desassociar"));
+        });
+
+        return ResponseEntity.ok(permissoesModel);
     }
 
     @DeleteMapping("/{permissaoId}")

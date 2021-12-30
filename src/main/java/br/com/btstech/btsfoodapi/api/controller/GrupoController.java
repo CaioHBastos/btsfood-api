@@ -9,6 +9,7 @@ import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.repository.GrupoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     private GrupoInputDisassembler grupoInputDisassembler;
 
     @GetMapping
-    public List<GrupoModel> listar() {
+    public CollectionModel<GrupoModel> listar() {
         List<Grupo> todosGrupos = grupoRepository.findAll();
         
         return grupoModelAssembler.toCollectionModel(todosGrupos);

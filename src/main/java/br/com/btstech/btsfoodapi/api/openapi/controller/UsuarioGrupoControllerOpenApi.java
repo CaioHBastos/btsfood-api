@@ -3,9 +3,8 @@ package br.com.btstech.btsfoodapi.api.openapi.controller;
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.GrupoModel;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Api(tags = "Usuários")
 public interface UsuarioGrupoControllerOpenApi {
@@ -14,7 +13,7 @@ public interface UsuarioGrupoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    ResponseEntity<List<GrupoModel>>  listar(
+    ResponseEntity<CollectionModel<GrupoModel>>  listar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
                     Long usuarioId);
 

@@ -6,46 +6,62 @@ import br.com.btstech.btsfoodapi.api.model.FormaPagamentoModel;
 import br.com.btstech.btsfoodapi.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento",
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
-    private CadastroRestauranteService cadastroRestauranteService;
+    @Autowired
+    private CadastroRestauranteService cadastroRestaurante;
+
+    @Autowired
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
+
+    @Autowired
     private BtsLinks btsLinks;
 
+    @Override
     @GetMapping
-    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(@PathVariable("id") Long restauranteId) {
-        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+    public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        CollectionModel<FormaPagamentoModel> formasPagamento =
-                formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
+        CollectionModel<FormaPagamentoModel> formasPagamentoModel
+                = formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(btsLinks.linkToRestauranteFormasPagamento(restauranteId));
+                .add(btsLinks.linkToRestauranteFormasPagamento(restauranteId))
+                .add(btsLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
 
-        return ResponseEntity.ok(formasPagamento);
+        formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
+            formaPagamentoModel.add(btsLinks.linkToRestauranteFormaPagamentoDesassociacao(
+                    restauranteId, formaPagamentoModel.getId(), "desassociar"));
+        });
+
+        return formasPagamentoModel;
     }
 
-    @PutMapping("/{formaPagamentoId}")
-    public ResponseEntity<Void> associar(@PathVariable("id") Long restauranteId, @PathVariable Long formaPagamentoId) {
-        cadastroRestauranteService.associarFormaPagamento(restauranteId, formaPagamentoId);
-
-        return ResponseEntity.noContent().build();
-    }
-
+    @Override
     @DeleteMapping("/{formaPagamentoId}")
-    public ResponseEntity<Void> desassociar(@PathVariable("id") Long restauranteId, @PathVariable Long formaPagamentoId) {
-        cadastroRestauranteService.desassociarFormaPagamento(restauranteId, formaPagamentoId);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
+        cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
 
         return ResponseEntity.noContent().build();
     }
-}
 
+    @Override
+    @PutMapping("/{formaPagamentoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
+        cadastroRestaurante.associarFormaPagamento(restauranteId, formaPagamentoId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+}

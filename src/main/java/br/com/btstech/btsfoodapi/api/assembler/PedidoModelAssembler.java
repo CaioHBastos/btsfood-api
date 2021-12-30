@@ -30,7 +30,7 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
         PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
 
-        pedidoModel.add(btsLinks.linkToPedidos());
+        pedidoModel.add(btsLinks.linkToPedidos("pedidos"));
 
         if (pedido.podeSerConfirmado()) {
             pedidoModel.add(btsLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));

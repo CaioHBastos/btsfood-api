@@ -4,9 +4,8 @@ import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.ProdutoModel;
 import br.com.btstech.btsfoodapi.api.model.input.ProdutoInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Api(tags = "Produtos")
 public interface RestauranteProdutoControllerOpenApi {
@@ -16,13 +15,13 @@ public interface RestauranteProdutoControllerOpenApi {
             @ApiResponse(code = 400, message = "ID do restaurante inválido", response = Problem.class),
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    ResponseEntity<List<ProdutoModel>> listar(
+    ResponseEntity<CollectionModel<ProdutoModel>> listar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
                     Long restauranteId,
 
             @ApiParam(value = "Indica se deve ou não incluir produtos inativos no resultado da listagem",
                     example = "false", defaultValue = "false")
-                    boolean incluirInativos);
+                    Boolean incluirInativos);
 
     @ApiOperation("Busca um produto de um restaurante")
     @ApiResponses({

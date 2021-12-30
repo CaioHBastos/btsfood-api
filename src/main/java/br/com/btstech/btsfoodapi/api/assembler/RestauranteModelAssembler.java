@@ -30,12 +30,6 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 
         restauranteModel.add(btsLinks.linkToRestaurantes("restaurantes"));
 
-        restauranteModel.getCozinha().add(
-                btsLinks.linkToCozinha(restaurante.getCozinha().getId()));
-
-        restauranteModel.getEndereco().getCidade().add(
-                btsLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
-
         if (restaurante.ativacaoPermitida()) {
             restauranteModel.add(
                     btsLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
@@ -54,6 +48,17 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
         if (restaurante.fechamentoPermitido()) {
             restauranteModel.add(
                     btsLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
+
+        restauranteModel.add(btsLinks.linkToProdutos(restaurante.getId(), "produtos"));
+
+        restauranteModel.getCozinha().add(
+                btsLinks.linkToCozinha(restaurante.getCozinha().getId()));
+
+        if (restauranteModel.getEndereco() != null
+                && restauranteModel.getEndereco().getCidade() != null) {
+            restauranteModel.getEndereco().getCidade().add(
+                    btsLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
         }
 
         restauranteModel.add(btsLinks.linkToRestauranteFormasPagamento(restaurante.getId(),
