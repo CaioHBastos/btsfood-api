@@ -3,6 +3,7 @@ package br.com.btstech.btsfoodapi.api.openapi.controller;
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
 import br.com.btstech.btsfoodapi.api.model.ProdutoModel;
 import br.com.btstech.btsfoodapi.api.model.input.ProdutoInput;
+import br.com.btstech.btsfoodapi.api.openapi.model.ProdutosModelOpenApi;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 @Api(tags = "Produtos")
 public interface RestauranteProdutoControllerOpenApi {
 
-    @ApiOperation("Lista os produtos de um restaurante")
+    @ApiOperation(value = "Lista os produtos de um restaurante", response = ProdutosModelOpenApi.class)
     @ApiResponses({
             @ApiResponse(code = 400, message = "ID do restaurante inválido", response = Problem.class),
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
