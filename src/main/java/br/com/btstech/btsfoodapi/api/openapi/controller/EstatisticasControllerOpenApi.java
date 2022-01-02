@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.api.openapi.controller;
 
+import br.com.btstech.btsfoodapi.api.controller.EstatisticasController;
 import br.com.btstech.btsfoodapi.domain.filter.VendaDiarioFilter;
 import br.com.btstech.btsfoodapi.domain.model.dto.VendaDiaria;
 import io.swagger.annotations.*;
@@ -9,6 +10,9 @@ import java.util.List;
 
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
+
+    @ApiOperation(value = "Estatísticas", hidden = true)
+    EstatisticasController.EstatisticasModel estatisticas();
 
     @ApiOperation("Consulta estatísticas de vendas diárias")
     @ApiImplicitParams({

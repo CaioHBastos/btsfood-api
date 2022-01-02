@@ -1,11 +1,13 @@
 package br.com.btstech.btsfoodapi.api.controller;
 
+import br.com.btstech.btsfoodapi.api.BtsLinks;
 import br.com.btstech.btsfoodapi.api.openapi.controller.EstatisticasControllerOpenApi;
 import br.com.btstech.btsfoodapi.domain.filter.VendaDiarioFilter;
 import br.com.btstech.btsfoodapi.domain.model.dto.VendaDiaria;
 import br.com.btstech.btsfoodapi.domain.service.VendaQueryService;
 import br.com.btstech.btsfoodapi.domain.service.VendaReportService;
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,17 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     private final VendaQueryService vendaQueryService;
     private VendaReportService vendaReportService;
+    private BtsLinks btsLinks;
+
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public EstatisticasModel estatisticas() {
+        var estatisticasModel = new EstatisticasModel();
+
+        estatisticasModel.add(btsLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+
+        return estatisticasModel;
+    }
 
     @Override
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +58,8 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
                 .contentType(MediaType.APPLICATION_PDF)
                 .headers(headers)
                 .body(bytesPdf);
+    }
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
     }
 }

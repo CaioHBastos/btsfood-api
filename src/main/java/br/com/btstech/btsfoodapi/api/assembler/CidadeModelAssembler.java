@@ -11,13 +11,14 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 @Component
-public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeModel> {
+public class CidadeModelAssembler
+        extends RepresentationModelAssemblerSupport<Cidade, CidadeModel> {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Autowired
-    BtsLinks btsLinks;
+    private BtsLinks btsLinks;
 
     public CidadeModelAssembler() {
         super(CidadeController.class, CidadeModel.class);
@@ -25,9 +26,9 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 
     @Override
     public CidadeModel toModel(Cidade cidade) {
-
         CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
-        modelMapper.map(cidadeModel, cidadeModel);
+
+        modelMapper.map(cidade, cidadeModel);
 
         cidadeModel.add(btsLinks.linkToCidades("cidades"));
 
