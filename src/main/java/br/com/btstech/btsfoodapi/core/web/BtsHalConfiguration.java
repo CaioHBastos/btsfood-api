@@ -12,6 +12,7 @@ public class BtsHalConfiguration {
     public HalConfiguration globalPolicy() {
         return new HalConfiguration()
                 .withMediaType(MediaType.APPLICATION_JSON)
-                .withMediaType(BtsMediaTypes.V1_APPLICATION_JSON);
+                .withMediaType(BtsMediaTypes.V1_APPLICATION_JSON)
+                .withMediaType(BtsMediaTypes.V2_APPLICATION_JSON);
     }
 }
