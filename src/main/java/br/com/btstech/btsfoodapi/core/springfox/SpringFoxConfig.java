@@ -1,14 +1,13 @@
 package br.com.btstech.btsfoodapi.core.springfox;
 
 import br.com.btstech.btsfoodapi.api.exceptionhandler.Problem;
-import br.com.btstech.btsfoodapi.api.model.*;
-import br.com.btstech.btsfoodapi.api.openapi.model.*;
+import br.com.btstech.btsfoodapi.api.v1.model.*;
+import br.com.btstech.btsfoodapi.api.v1.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;

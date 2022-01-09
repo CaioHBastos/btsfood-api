@@ -1,7 +1,7 @@
 package br.com.btstech.btsfoodapi.core.configuration;
 
-import br.com.btstech.btsfoodapi.api.model.EnderecoModel;
-import br.com.btstech.btsfoodapi.api.model.input.ItemPedidoInput;
+import br.com.btstech.btsfoodapi.api.v1.model.EnderecoModel;
+import br.com.btstech.btsfoodapi.api.v1.model.input.ItemPedidoInput;
 import br.com.btstech.btsfoodapi.domain.model.Endereco;
 import br.com.btstech.btsfoodapi.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
