@@ -19,6 +19,11 @@ public class WebConfig implements WebMvcConfigurer {
         //.allowedMethods("*")
     }
 
+/*    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(apiRetirementHandler);
+    }*/
+
     @Bean
     public Filter shallowEtagHeaderFilter() {
         return new ShallowEtagHeaderFilter();

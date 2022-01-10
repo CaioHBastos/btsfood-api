@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/grupos/{grupoId}/permissoes",
+@RequestMapping(path = "/v1/grupos/{grupoId}/permissoes",
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 

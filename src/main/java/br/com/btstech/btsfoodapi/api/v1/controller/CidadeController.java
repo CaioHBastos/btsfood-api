@@ -32,6 +32,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeModelAssembler cidadeModelAssembler;
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @Deprecated
     @Override
     @GetMapping
     public CollectionModel<CidadeModel> listar() {

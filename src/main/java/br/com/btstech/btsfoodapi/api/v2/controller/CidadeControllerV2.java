@@ -5,6 +5,7 @@ import br.com.btstech.btsfoodapi.api.v2.assembler.CidadeInputDisassemblerV2;
 import br.com.btstech.btsfoodapi.api.v2.assembler.CidadeModelAssemblerV2;
 import br.com.btstech.btsfoodapi.api.v2.model.CidadeModelV2;
 import br.com.btstech.btsfoodapi.api.v2.model.input.CidadeInputV2;
+import br.com.btstech.btsfoodapi.api.v2.openApi.controller.CidadeControllerV2OpenApi;
 import br.com.btstech.btsfoodapi.domain.exception.EstadoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.model.Cidade;
@@ -22,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping(path = "v2/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+public class CidadeControllerV2 implements CidadeControllerV2OpenApi {
 
     private CidadeRepository cidadeRepository;
     private CadastroCidadeService cadastroCidade;
@@ -77,10 +78,9 @@ public class CidadeControllerV2 {
         }
     }
 
-//  Não pode ser mapeado na mesma URL em um MediaType diferente, já que não aceita entrada e retorna void.
-//	@DeleteMapping(value = "/{cidadeId}", produces = {})
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void remover(@PathVariable Long cidadeId) {
-//		cadastroCidade.excluir(cidadeId);
-//	}
+	@DeleteMapping(value = "/{cidadeId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long cidadeId) {
+		cadastroCidade.excluir(cidadeId);
+	}
 }
