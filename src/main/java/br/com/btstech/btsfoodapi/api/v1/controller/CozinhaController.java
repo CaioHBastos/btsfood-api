@@ -9,6 +9,7 @@ import br.com.btstech.btsfoodapi.domain.model.Cozinha;
 import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroCozinhaService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping(path = "/v1/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,12 +35,11 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
     @GetMapping
     public PagedModel<CozinhaModel> listar(Pageable pageable) {
+        log.info("Consultando cozinhas...");
+
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
-        PagedModel<CozinhaModel> cozinhasPagedModel =
-                pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
-
-        return cozinhasPagedModel;
+        return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
     }
 
     @GetMapping("/{id}")

@@ -37,7 +37,7 @@ public interface RestauranteControllerOpenApi {
 
     @ApiOperation("Cadastra um restaurante")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "Restaurante cadastrado"),
+              @ApiResponse(code = 201, message = "Restaurante cadastrado"),
     })
     ResponseEntity<?> adicionar(
             @ApiParam(name = "corpo", value = "Representação de um novo restaurante", required = true)
