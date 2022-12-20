@@ -4,7 +4,7 @@ import br.com.btstech.btsfoodapi.core.validation.ValidacaoException;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeEmUsoException;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
-import com.fasterxml.jackson.databind.JsonMappingException.Reference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import lombok.extern.slf4j.Slf4j;
@@ -278,9 +278,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    private String joinPath(List<Reference> references) {
+    private String joinPath(List<JsonMappingException.Reference> references) {
         return references.stream()
-                .map(Reference::getFieldName)
+                .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.joining("."));
     }
 

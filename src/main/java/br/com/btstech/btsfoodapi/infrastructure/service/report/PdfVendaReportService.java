@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.infrastructure.service.report;
+/*package br.com.btstech.btsfoodapi.infrastructure.service.report;
 
 import br.com.btstech.btsfoodapi.domain.filter.VendaDiarioFilter;
 import br.com.btstech.btsfoodapi.domain.service.VendaQueryService;
@@ -38,4 +38,4 @@ public class PdfVendaReportService implements VendaReportService {
         }
     }
 
-}
+}*/

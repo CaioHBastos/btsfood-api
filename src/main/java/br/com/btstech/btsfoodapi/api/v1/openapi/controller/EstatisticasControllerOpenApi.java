@@ -1,9 +1,13 @@
-package br.com.btstech.btsfoodapi.api.v1.openapi.controller;
+/*package br.com.btstech.btsfoodapi.api.v1.openapi.controller;
 
 import br.com.btstech.btsfoodapi.api.v1.controller.EstatisticasController;
 import br.com.btstech.btsfoodapi.domain.filter.VendaDiarioFilter;
 import br.com.btstech.btsfoodapi.domain.model.dto.VendaDiaria;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -33,4 +37,4 @@ public interface EstatisticasControllerOpenApi {
     ResponseEntity<byte[]> consultarVendasDiariasPdf(
             VendaDiarioFilter filtro,
             String timeOffset);
-}
+}*/

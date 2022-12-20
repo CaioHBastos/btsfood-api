@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi;
+/*package br.com.btstech.btsfoodapi;
 
 import br.com.btstech.btsfoodapi.domain.model.Cozinha;
 import br.com.btstech.btsfoodapi.domain.repository.CozinhaRepository;
@@ -154,5 +154,5 @@ public class CadastroCozinhaIT {
     @Test
     public void deveFalhar_QuandoExcluirCozinhaInexistente() {
         assertThrows(CozinhaNaoEncontradaException.class, () -> cadastroCozinhaService.excluir(100L));
-    }*/
-}
+    }
+}*/

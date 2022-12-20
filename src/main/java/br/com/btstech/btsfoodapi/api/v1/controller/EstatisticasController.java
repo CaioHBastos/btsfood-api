@@ -1,4 +1,4 @@
-package br.com.btstech.btsfoodapi.api.v1.controller;
+/*package br.com.btstech.btsfoodapi.api.v1.controller;
 
 import br.com.btstech.btsfoodapi.api.v1.BtsLinks;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.EstatisticasControllerOpenApi;
@@ -62,4 +62,4 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
     }
-}
+}*/
