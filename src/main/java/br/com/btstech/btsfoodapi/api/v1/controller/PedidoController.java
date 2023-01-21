@@ -9,6 +9,7 @@ import br.com.btstech.btsfoodapi.api.v1.model.input.PedidoInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.PedidoControllerOpenApi;
 import br.com.btstech.btsfoodapi.core.data.PageWrapper;
 import br.com.btstech.btsfoodapi.core.data.PageableTranslator;
+import br.com.btstech.btsfoodapi.core.security.BtsSecurity;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
@@ -25,7 +26,12 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -41,6 +47,8 @@ public class PedidoController implements PedidoControllerOpenApi {
     private PedidoResumoModelAssembler pedidoResumoModelAssembler;
     private PedidoInputDisassembler pedidoInputDisassembler;
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+    private BtsSecurity btsSecurity;
+
 
     /*@GetMapping
     public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
@@ -86,9 +94,8 @@ public class PedidoController implements PedidoControllerOpenApi {
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-            // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
-            novoPedido.getCliente().setId(1L);
+            novoPedido.getCliente().setId(btsSecurity.getUsuarioId());
 
             novoPedido = emissaoPedido.emitir(novoPedido);
             PedidoModel pedidoModel = pedidoModelAssembler.toModel(novoPedido);
