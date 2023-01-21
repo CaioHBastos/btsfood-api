@@ -6,6 +6,7 @@ import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.model.Usuario;
 import br.com.btstech.btsfoodapi.domain.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ public class CadastroUsuarioService {
 
     private UsuarioRepository usuarioRepository;
     private CadastroGrupoService cadastroGrupoService;
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
@@ -30,6 +32,10 @@ public class CadastroUsuarioService {
                     String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
         }
 
+        if (usuario.isNovo()) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
         return usuarioRepository.save(usuario);
     }
     
@@ -37,11 +43,11 @@ public class CadastroUsuarioService {
     public void alterarSenha(Long usuarioId, String senhaAtual, String novaSenha) {
         Usuario usuario = buscarOuFalhar(usuarioId);
         
-        if (usuario.senhaNaoCoincideCom(senhaAtual)) {
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
             throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
         }
         
-        usuario.setSenha(novaSenha);
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
     }
 
     public Usuario buscarOuFalhar(Long usuarioId) {

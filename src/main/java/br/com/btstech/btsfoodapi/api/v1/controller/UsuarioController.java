@@ -62,7 +62,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioModelAssembler.toModel(usuarioAtual);
     }
     
-    @PutMapping("/{id}/senha")
+    @PutMapping("/{id}/senhas")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long id, @RequestBody @Valid SenhaInput senha) {
         cadastroUsuario.alterarSenha(id, senha.getSenhaAtual(), senha.getNovaSenha());
