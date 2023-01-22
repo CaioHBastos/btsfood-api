@@ -9,6 +9,7 @@ import br.com.btstech.btsfoodapi.api.v1.model.RestauranteBasicoModel;
 import br.com.btstech.btsfoodapi.api.v1.model.RestauranteModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.RestauranteInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.RestauranteControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.exception.CidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.CozinhaNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
@@ -39,6 +40,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
 
     //@JsonView(RestauranteView.Resumo.class)
+    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<RestauranteBasicoModel> listar() {
@@ -47,6 +49,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
     }
 
     //@JsonView(RestauranteView.ApenasNome.class)
+    @CheckSecurity.Restaurantes.PodeConsultar
     @Override
     @GetMapping(params = "projecao=apenas-nome")
     public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
@@ -62,6 +65,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         return ResponseEntity.ok(restauranteModel);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
@@ -77,6 +82,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput) {
         //Restaurante novoRestaurante = restauranteInputDisassembler.toDomain(restauranteInput);
@@ -99,6 +106,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/{id}/ativo")
     public ResponseEntity<Void> ativar(@PathVariable Long id) {
         cadastroRestauranteService.ativar(id);
@@ -111,18 +120,24 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/{id}/abertura")
     public ResponseEntity<Void> abrir(@PathVariable("id") Long restauranteId) {
         cadastroRestauranteService.abrir(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/{id}/fechamento")
     public ResponseEntity<Void> fechar(@PathVariable("id") Long restauranteId) {
         cadastroRestauranteService.fechar(restauranteId);
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/ativacoes")
     public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {
@@ -134,6 +149,8 @@ public class RestauranteController implements RestauranteControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @DeleteMapping("/ativacoes")
     public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {

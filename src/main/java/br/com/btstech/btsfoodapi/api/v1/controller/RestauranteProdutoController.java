@@ -6,6 +6,7 @@ import br.com.btstech.btsfoodapi.api.v1.assembler.ProdutoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.ProdutoModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.ProdutoInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Produto;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.repository.ProdutoRepository;
@@ -34,6 +35,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     private ProdutoInputDisassembler produtoInputDisassembler;
     private BtsLinks btsLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
+    @Override
     @GetMapping
     public ResponseEntity<CollectionModel<ProdutoModel>> listar(@PathVariable Long restauranteId,
                                                                 @RequestParam(required = false) Boolean incluirInativos) {
@@ -53,6 +56,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return ResponseEntity.ok(produtoModels);
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
+    @Override
     @GetMapping("/{produtoId}")
     public ResponseEntity<ProdutoModel> buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -61,6 +66,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return ResponseEntity.ok(produtoModel);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PostMapping
     public ResponseEntity<ProdutoModel> adicionar(@PathVariable Long restauranteId,
                                   @RequestBody @Valid ProdutoInput produtoInput) {
@@ -75,6 +82,8 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoModel);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping("/{produtoId}")
     public ResponseEntity<ProdutoModel> atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                   @RequestBody @Valid ProdutoInput produtoInput) {

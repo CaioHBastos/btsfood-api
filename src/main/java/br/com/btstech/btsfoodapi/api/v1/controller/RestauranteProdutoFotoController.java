@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.v1.assembler.FotoProdutoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.FotoProdutoModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.FotoProdutoInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.model.FotoProduto;
 import br.com.btstech.btsfoodapi.domain.model.Produto;
@@ -35,6 +36,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     private FotoProdutoModelAssembler fotoProdutoModelAssembler;
     private FotoStorageService fotoStorageService;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
+    @Override
     @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -42,6 +45,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
+    @Override
     @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servir(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                     @RequestHeader(name = "Accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -74,6 +78,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
                                           @Valid FotoProdutoInput fotoProdutoInput,
@@ -94,6 +100,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @DeleteMapping
     public ResponseEntity<Void> excluir(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 

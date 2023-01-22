@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.v1.BtsLinks;
 import br.com.btstech.btsfoodapi.api.v1.assembler.UsuarioModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.UsuarioModel;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Restaurante;
 import br.com.btstech.btsfoodapi.domain.service.CadastroRestauranteService;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     private UsuarioModelAssembler usuarioModelAssembler;
     private BtsLinks btsLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
+    @Override
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -40,6 +43,8 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         return usuariosModel;
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
+    @Override
     @DeleteMapping("/{usuarioId}")
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestaurante.desassociarResponsavel(restauranteId, usuarioId);
