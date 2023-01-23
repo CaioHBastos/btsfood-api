@@ -10,6 +10,7 @@ import br.com.btstech.btsfoodapi.api.v1.openapi.controller.PedidoControllerOpenA
 import br.com.btstech.btsfoodapi.core.data.PageWrapper;
 import br.com.btstech.btsfoodapi.core.data.PageableTranslator;
 import br.com.btstech.btsfoodapi.core.security.BtsSecurity;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.exception.EntidadeNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.filter.PedidoFilter;
@@ -69,6 +70,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pedidoWrapper;
     }*/
 
+    @Override
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
         Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -81,6 +83,8 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
+    @Override
     @GetMapping("/{codigoPedido}")
     public ResponseEntity<PedidoModel> buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
@@ -89,6 +93,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return ResponseEntity.ok(pedidoModel);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<PedidoModel> adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
         try {

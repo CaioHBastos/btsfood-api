@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.core.security;
 
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.lang.annotation.ElementType;
@@ -42,6 +43,35 @@ public @interface CheckSecurity {
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeConsultar { }
+
+    }
+
+    @interface Pedidos {
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeGerenciarCadastro { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+                "(hasAuthority('EDITAR_RESTAURANTES') or " +
+                "@btsSecurity.gerenciaRestaurante(#restauranteId))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeGerenciarFuncionamento { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or " +
+                "@btsSecurity.getUsuarioId() == returnObject.body.cliente.id or " +
+                "@btsSecurity.gerenciaRestaurante(returnObject.body.restaurante.id)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeBuscar { }
 
     }
 }
