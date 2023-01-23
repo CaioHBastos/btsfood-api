@@ -24,17 +24,24 @@ public @interface CheckSecurity {
         }
     }
 
-    public @interface Restaurantes {
+    @interface Restaurantes {
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        public @interface PodeEditar { }
+        @interface PodeGerenciarCadastro { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+                "(hasAuthority('EDITAR_RESTAURANTES') or " +
+                "@btsSecurity.gerenciaRestaurante(#restauranteId))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeGerenciarFuncionamento { }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        public @interface PodeConsultar { }
+        @interface PodeConsultar { }
 
     }
 }

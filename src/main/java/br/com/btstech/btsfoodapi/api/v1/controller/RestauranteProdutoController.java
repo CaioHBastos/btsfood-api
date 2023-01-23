@@ -66,7 +66,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return ResponseEntity.ok(produtoModel);
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @PostMapping
     public ResponseEntity<ProdutoModel> adicionar(@PathVariable Long restauranteId,
@@ -82,7 +82,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoModel);
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @PutMapping("/{produtoId}")
     public ResponseEntity<ProdutoModel> atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,

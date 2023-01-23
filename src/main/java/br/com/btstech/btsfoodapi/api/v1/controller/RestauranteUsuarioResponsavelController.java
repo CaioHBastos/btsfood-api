@@ -35,15 +35,15 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
                 .add(btsLinks.linkToRestauranteResponsaveis(restauranteId))
                 .add(btsLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
 
-        usuariosModel.getContent().stream().forEach(usuarioModel -> {
-            usuarioModel.add(btsLinks.linkToRestauranteResponsavelDesassociacao(
-                    restauranteId, usuarioModel.getId(), "desassociar"));
-        });
+        usuariosModel.getContent().forEach(usuarioModel -> usuarioModel.add(
+                btsLinks.linkToRestauranteResponsavelDesassociacao(
+                        restauranteId, usuarioModel.getId(), "desassociar"))
+        );
 
         return usuariosModel;
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @DeleteMapping("/{usuarioId}")
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

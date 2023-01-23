@@ -97,4 +97,6 @@ public interface RestauranteRepository
      *      - retorna a quantidade de restaurantes que tenham a cozinha informada.
      */
     int countByCozinhaId(Long cozinhaId);
+
+    boolean existsResponsavel(Long restauranteId, Long usuarioId);
 }
