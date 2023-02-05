@@ -1,5 +1,6 @@
 package br.com.btstech.btsfoodapi.core.security;
 
+import br.com.btstech.btsfoodapi.domain.repository.PedidoRepository;
 import br.com.btstech.btsfoodapi.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,9 @@ public class BtsSecurity {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -29,6 +33,10 @@ public class BtsSecurity {
         }
 
         return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
+    }
+
+    public boolean gerenciaRestauranteDoPedido(String codigoPedido) {
+        return pedidoRepository.isPedidoGerenciadoPor(codigoPedido, getUsuarioId());
     }
 
 //    public boolean clienteDoPedido(String codigoPedido) {

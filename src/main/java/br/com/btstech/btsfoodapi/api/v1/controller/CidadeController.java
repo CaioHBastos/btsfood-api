@@ -6,6 +6,7 @@ import br.com.btstech.btsfoodapi.api.v1.assembler.CidadeModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.CidadeModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.CidadeInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.CidadeControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.exception.EstadoNaoEncontradaException;
 import br.com.btstech.btsfoodapi.domain.exception.NegocioException;
 import br.com.btstech.btsfoodapi.domain.model.Cidade;
@@ -32,6 +33,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeModelAssembler cidadeModelAssembler;
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Deprecated
     @Override
     @GetMapping
@@ -41,6 +43,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<CidadeModel> buscar(@PathVariable Long id) {
@@ -51,6 +54,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return ResponseEntity.ok(cidadeModel);
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PostMapping
     public ResponseEntity<CidadeModel> adicionar(@RequestBody @Valid CidadeInput novaCidade) {
@@ -69,6 +73,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PutMapping("/{id}")
     public ResponseEntity<CidadeModel> atualizar(@PathVariable Long id,
@@ -89,6 +94,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {

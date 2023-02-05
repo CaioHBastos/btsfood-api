@@ -5,6 +5,7 @@ import br.com.btstech.btsfoodapi.api.v1.assembler.GrupoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.GrupoControllerOpenApi;
 import br.com.btstech.btsfoodapi.api.v1.model.GrupoModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.GrupoInput;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.repository.GrupoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
@@ -28,20 +29,23 @@ public class GrupoController implements GrupoControllerOpenApi {
     private GrupoModelAssembler grupoModelAssembler;
     private GrupoInputDisassembler grupoInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<GrupoModel> listar() {
         List<Grupo> todosGrupos = grupoRepository.findAll();
         
         return grupoModelAssembler.toCollectionModel(todosGrupos);
     }
-    
+
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping("/{id}")
     public GrupoModel buscar(@PathVariable Long id) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(id);
         
         return grupoModelAssembler.toModel(grupo);
     }
-    
+
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PostMapping
     public ResponseEntity<GrupoModel> adicionar(@RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
@@ -51,7 +55,8 @@ public class GrupoController implements GrupoControllerOpenApi {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(grupoModel);
     }
-    
+
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{id}")
     public GrupoModel atualizar(@PathVariable Long id, @RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(id);
@@ -62,7 +67,8 @@ public class GrupoController implements GrupoControllerOpenApi {
         
         return grupoModelAssembler.toModel(grupoAtual);
     }
-    
+
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         cadastroGrupo.excluir(id);

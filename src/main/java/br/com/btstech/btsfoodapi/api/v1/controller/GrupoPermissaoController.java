@@ -4,6 +4,7 @@ import br.com.btstech.btsfoodapi.api.v1.BtsLinks;
 import br.com.btstech.btsfoodapi.api.v1.assembler.PermissaoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.PermissaoModel;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Grupo;
 import br.com.btstech.btsfoodapi.domain.service.CadastroGrupoService;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     private PermissaoModelAssembler permissaoModelAssembler;
     private BtsLinks btsLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public ResponseEntity<CollectionModel<PermissaoModel>> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
@@ -39,6 +41,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return ResponseEntity.ok(permissoesModel);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{permissaoId}")
     public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         cadastroGrupo.desassociarPermissao(grupoId, permissaoId);
@@ -46,6 +49,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{permissaoId}")
     public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         cadastroGrupo.associarPermissao(grupoId, permissaoId);

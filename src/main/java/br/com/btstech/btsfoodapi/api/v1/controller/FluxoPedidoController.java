@@ -1,6 +1,7 @@
 package br.com.btstech.btsfoodapi.api.v1.controller;
 
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.FluxoPedidoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.service.FluxoPedidoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     private FluxoPedidoService fluxoPedidoService;
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/confirmacao")
     public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
         fluxoPedidoService.confirmar(codigoPedido);
@@ -24,6 +26,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/cancelamento")
     public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
         fluxoPedidoService.cancelar(codigoPedido);
@@ -31,6 +34,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Pedidos.PodeGerenciarPedidos
     @PutMapping("/entrega")
     public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
         fluxoPedidoService.entregar(codigoPedido);

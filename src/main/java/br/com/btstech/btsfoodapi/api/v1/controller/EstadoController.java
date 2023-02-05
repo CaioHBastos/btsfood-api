@@ -5,6 +5,7 @@ import br.com.btstech.btsfoodapi.api.v1.assembler.EstadoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.EstadoModel;
 import br.com.btstech.btsfoodapi.api.v1.model.input.EstadoInput;
 import br.com.btstech.btsfoodapi.api.v1.openapi.controller.EstadoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Estado;
 import br.com.btstech.btsfoodapi.domain.repository.EstadoRepository;
 import br.com.btstech.btsfoodapi.domain.service.CadastroEstadoService;
@@ -28,6 +29,7 @@ public class EstadoController implements EstadoControllerOpenApi {
     private EstadoModelAssembler estadoModelAssembler;
     private EstadoInputDisassembler estadoInputDisassembler;
 
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping
     public CollectionModel<EstadoModel> listar() {
         List<Estado> todosEstados = estadoRepository.findAll();
@@ -35,6 +37,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping("/{id}")
     public ResponseEntity<EstadoModel> buscar(@PathVariable Long id) {
         Estado estado = cadastroEstadoService.buscarOuFalhar(id);
@@ -43,6 +46,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return ResponseEntity.ok(estadoModel);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @PostMapping
     public ResponseEntity<EstadoModel> adicionar(@RequestBody @Valid EstadoInput novoEstado) {
         Estado estado = estadoInputDisassembler.toDomainObject(novoEstado);
@@ -52,6 +56,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(estadoModel);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @PutMapping("/{id}")
     public ResponseEntity<EstadoModel> atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput novoEstado) {
         Estado estadoAtual = cadastroEstadoService.buscarOuFalhar(id);
@@ -63,6 +68,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return ResponseEntity.ok(estadoModel);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         cadastroEstadoService.excluir(id);

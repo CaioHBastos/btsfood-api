@@ -3,6 +3,7 @@ package br.com.btstech.btsfoodapi.api.v1.controller;
 import br.com.btstech.btsfoodapi.api.v1.assembler.PermissaoModelAssembler;
 import br.com.btstech.btsfoodapi.api.v1.model.PermissaoModel;
 import br.com.btstech.btsfoodapi.api.v1.openapi.PermissaoControllerOpenApi;
+import br.com.btstech.btsfoodapi.core.security.CheckSecurity;
 import br.com.btstech.btsfoodapi.domain.model.Permissao;
 import br.com.btstech.btsfoodapi.domain.repository.PermissaoRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     private final PermissaoRepository permissaoRepository;
     private final PermissaoModelAssembler permissaoModelAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar() {

@@ -94,6 +94,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return ResponseEntity.ok(pedidoModel);
     }
 
+    @CheckSecurity.Pedidos.PodeCriar
     @Override
     @PostMapping
     public ResponseEntity<PedidoModel> adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
